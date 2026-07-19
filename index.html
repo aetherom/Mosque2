@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0A3622">
+<title>Jamia Masjid – Prayer Times & Community</title>
+<style>
+  :root {
+    --emerald:#0A3622; --emerald-2:#124a2f; --emerald-light:#1e5a3b;
+    --gold:#D4AF37; --gold-2:#b8972f; --gold-light:#f3d56b;
+    --bg:#f0f4f1; --card:#ffffff; --card-solid:#ffffff; --text:#0f1a14; --muted:#5a6b60;
+    --border:#e0e8e2; --shadow:0 8px 24px -4px rgba(10,54,34,.06); --shadow-lg:0 16px 40px -8px rgba(10,54,34,.12);
+    --radius:20px; --azan-color:#2d7a4f; --jamat-color:#0A3622;
+  }
+  [data-theme="dark"] {
+    --bg:#050807; --card:#0d130f; --text:#e8efe9; --muted:#7a8a80;
+    --border:#1a241d; --shadow:0 8px 24px -4px rgba(0,0,0,.4); --shadow-lg:0 16px 40px -8px rgba(0,0,0,.6);
+    --card-solid:#0d130f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Poppins,Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  a{color:inherit}img{max-width:100%}.container{max-width:1140px;margin:0 auto;padding:0 20px}
+  
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+  [data-theme="dark"] header{background:rgba(5,8,7,.85)}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.5px;color:var(--emerald);font-size:20px}
+  [data-theme="dark"] .brand{color:#fff}
+  .brand svg{width:34px;height:34px;fill:var(--gold);flex-shrink:0}
+  .brand span{color:var(--gold);font-size:13px;font-weight:600;display:block;letter-spacing:1.5px;margin-top:2px}
+  .header-actions{display:flex;gap:8px;align-items:center}
+  .btn-icon{background:var(--bg);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s}
+  .btn-icon:hover{border-color:var(--gold);color:var(--gold)}
+  .lang-select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:12px;font-size:13px;cursor:pointer;font-weight:600}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-2));color:#1f1700;font-weight:800;padding:12px 24px;border:none;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px rgba(212,175,55,.25);transition:.2s;font-size:14px;white-space:nowrap}
+  .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(212,175,55,.35)}
+  
+  nav{display:flex;gap:4px;padding:0 0 14px;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{border:0;background:transparent;padding:10px 18px;border-radius:10px;font-weight:600;color:var(--muted);cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s}
+  nav button.active{background:var(--emerald);color:#fff;box-shadow:0 4px 10px rgba(10,54,34,.15)}
+  nav button:not(.active):hover{background:var(--bg);color:var(--emerald)}
+  [data-theme="dark"] nav button:not(.active):hover{color:#fff}
+  
+  .announce{background:var(--emerald);color:#eaf6f0;position:relative;overflow:hidden;padding:6px 0}
+  .announce-track{display:flex;gap:50px;white-space:nowrap;padding:6px 0;animation:marquee 40s linear infinite}
+  .announce:hover .announce-track{animation-play-state:paused}
+  .announce span{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:500;opacity:.9}
+  .announce span::before{content:"✦";color:var(--gold);font-size:10px}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  
+  main{padding:30px 0 80px;overflow-x:hidden}
+  .page{display:none}.page.active{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  
+  .card{background:var(--card-solid);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;border:1px solid var(--border);transition:.3s}
+  
+  .hero{background:linear-gradient(135deg,var(--emerald) 0%,var(--emerald-2) 100%);color:#fff;padding:36px;position:relative;overflow:hidden;border:0;box-shadow:var(--shadow-lg);border-radius:24px}
+  .hero::before{content:"";position:absolute;right:-50px;top:-50px;width:320px;height:320px;background:radial-gradient(circle,rgba(212,175,55,.2),transparent 70%);border-radius:50%}
+  .hero::after{content:"";position:absolute;left:-50px;bottom:-50px;width:250px;height:250px;background:radial-gradient(circle,rgba(255,255,255,.04),transparent 70%);border-radius:50%}
+  .hero-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:30px;align-items:center;position:relative;z-index:1}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:24px}}
+  .next-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:800}
+  .next-prayer{font-size:52px;font-weight:900;margin:8px 0 12px;letter-spacing:-1.5px;line-height:1}
+  @media(max-width:480px){.next-prayer{font-size:38px}}
+  .countdown{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:56px;font-weight:800;letter-spacing:1px;line-height:1;text-shadow:0 4px 10px rgba(0,0,0,.2)}
+  @media(max-width:480px){.countdown{font-size:42px}}
+  .time-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+  .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:12px 18px;border-radius:14px;backdrop-filter:blur(10px);min-width:110px}
+  .pill small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.8;margin-bottom:4px}
+  .pill strong{font-size:20px;font-weight:700}
+  .clock{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;text-align:center;backdrop-filter:blur(10px)}
+  .clock .t{font-size:36px;font-weight:800;font-family:ui-monospace;letter-spacing:1px}
+  .clock .d{opacity:.9;font-size:14px;margin-top:6px;font-weight:500}
+  .clock .h{opacity:.8;font-size:13px;margin-top:4px;font-style:italic}
+  .clock .tz{font-size:10px;opacity:.6;margin-top:8px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+  
+  .section{margin-top:36px}
+  .section-title{font-size:22px;font-weight:800;color:var(--emerald);margin:0 0 18px;display:flex;align-items:center;gap:12px;letter-spacing:-.5px}
+  [data-theme="dark"] .section-title{color:#fff}
+  .section-title::before{content:"";width:5px;height:24px;background:linear-gradient(180deg,var(--gold-light),var(--gold-2));border-radius:3px}
+  
+  .month-label{margin:0 0 14px;color:var(--emerald);font-size:18px;font-weight:700}
+  [data-theme="dark"] .month-label{color:var(--gold)}
+  
+  .prayer-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .prayer-grid.has-extra{grid-template-columns:repeat(6,1fr)}
+  @media(max-width:980px){.prayer-grid,.prayer-grid.has-extra{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:600px){.prayer-grid,.prayer-grid.has-extra{grid-template-columns:repeat(2,1fr)}}
+  .pray{background:var(--card-solid);border:1px solid var(--border);border-radius:18px;padding:20px 14px;text-align:center;transition:.3s;position:relative;overflow:hidden}
+  .pray:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--gold)}
+  .pray.next{border-color:var(--gold);background:linear-gradient(180deg,#fffbf0,#fff);box-shadow:0 12px 30px -5px rgba(212,175,55,.25)}
+  [data-theme="dark"] .pray.next{background:linear-gradient(180deg,#1a1d14,#12180f)}
+  .pray.next::after{content:"NEXT";position:absolute;top:0;right:0;background:var(--gold);color:#1a1200;font-size:9px;font-weight:900;padding:5px 10px;border-radius:0 0 0 12px;letter-spacing:1px}
+  .pray .n{font-weight:700;color:var(--muted);margin-bottom:12px;font-size:13px;text-transform:uppercase;letter-spacing:1px}
+  .pray.next .n{color:var(--emerald)}[data-theme="dark"] .pray.next .n{color:var(--gold)}
+  .pray .azan{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+  .pray .lab{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+  .pray .jam{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);font-size:14px;line-height:1.4}
+  .pray .jam strong{font-size:16px;display:block;color:var(--emerald)}[data-theme="dark"] .pray .jam strong{color:#fff}
+  
+  .grid-2{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;min-width:0}
+  @media(max-width:880px){.grid-2{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
+  th,td{padding:12px 10px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);background:var(--bg);font-weight:700}
+  [data-theme="dark"] th{background:#080c0a}
+  tr.today td{background:rgba(212,175,55,.08);font-weight:700}
+  .table-wrap{overflow:auto;border-radius:16px;border:1px solid var(--border);max-height:400px;background:var(--card-solid);-webkit-overflow-scrolling:touch}
+  .month-table{display:block;width:max-content;min-width:100%}
+  .month-table thead tr:first-child th{position:sticky;top:0;z-index:4;border-bottom:2px solid var(--gold);font-size:13px;font-weight:800;color:#fff;padding:14px 8px;background:var(--emerald)}
+  .month-table thead tr:nth-child(2) th{position:sticky;top:44px;z-index:3;font-size:11px;padding:8px 4px;letter-spacing:1px}
+  .month-table thead tr:nth-child(2) th.azan-header{background:#e8f5ec;color:var(--azan-color);border-bottom:2px solid var(--azan-color)}[data-theme="dark"] .month-table thead tr:nth-child(2) th.azan-header{background:#11221a}
+  .month-table thead tr:nth-child(2) th.jamat-header{background:#d4edda;color:var(--jamat-color);border-bottom:2px solid var(--jamat-color)}[data-theme="dark"] .month-table thead tr:nth-child(2) th.jamat-header{background:#1a2a20}
+  .month-table td.azan-cell{color:var(--azan-color);font-weight:600;font-family:ui-monospace;font-size:13px;background:rgba(45,122,79,.03)}
+  .month-table td.jamat-cell{color:var(--text);font-weight:700;font-family:ui-monospace;font-size:13px;background:rgba(10,54,34,.03)}[data-theme="dark"] .month-table td.jamat-cell{color:var(--gold)}
+  .month-table td.date-cell{font-weight:800;color:var(--emerald);font-size:15px;border-right:2px solid var(--gold)}[data-theme="dark"] .month-table td.date-cell{color:#fff}
+  .month-table tr.today td.date-cell{background:var(--gold);color:#1a1200}
+  
+  .toggle{border:1px solid var(--border);background:var(--bg);color:var(--emerald);padding:8px 14px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap;transition:.2s}
+  [data-theme="dark"] .toggle{color:#fff}
+  .toggle:hover{border-color:var(--gold);color:var(--gold)}
+  .muted{color:var(--muted);font-size:13px}
+  .pending-update{color:#b45309;font-style:italic;font-size:13px}
+  
+  .modal{position:fixed;inset:0;background:rgba(3,14,9,.7);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(8px)}
+  .modal.show{display:flex;animation:fade .2s ease}
+  .modal-card{background:var(--card-solid);border-radius:24px;max-width:520px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden;border:1px solid var(--border);max-height:90vh;display:flex;flex-direction:column}
+  .modal-head{background:linear-gradient(135deg,var(--emerald),var(--emerald-2));color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+  .modal-head h3{margin:0;font-size:18px;font-weight:700;letter-spacing:-.5px}
+  .x{background:rgba(255,255,255,.1);border:0;color:#fff;font-size:20px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.2s}
+  .x:hover{background:rgba(255,255,255,.2)}
+  .modal-body{padding:24px;overflow-y:auto}
+  .donate-btn{display:flex;flex-direction:column;align-items:flex-start;width:100%;padding:16px;margin-bottom:10px;border:1px solid var(--border);border-radius:16px;background:var(--bg);cursor:pointer;text-decoration:none;color:inherit;transition:.2s}
+  .donate-btn:hover{border-color:var(--gold);background:#fffdf3;transform:translateY(-1px)}
+  [data-theme="dark"] .donate-btn:hover{background:#1a1d14}
+  .donate-btn strong{font-size:15px;color:var(--emerald)}[data-theme="dark"] .donate-btn strong{color:var(--gold)}
+  .donate-btn span{font-size:12px;color:var(--muted);margin-top:2px}
+  .bank{background:var(--bg);border:1px dashed var(--border);border-radius:14px;padding:16px;font-family:ui-monospace;font-size:13px;margin:8px 0 14px;white-space:pre-wrap;line-height:1.6}
+  .info-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+  .info-list li{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--border);padding:14px;border-radius:14px}
+  .info-list svg{flex-shrink:0;margin-top:2px;stroke:var(--emerald)}[data-theme="dark"] .info-list svg{stroke:var(--gold)}
+  .madrasa-block,.announcement-event{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px}
+  .madrasa-block h3{margin:0 0 10px;color:var(--emerald);font-size:16px}[data-theme="dark"] .madrasa-block h3{color:var(--gold)}
+  .madrasa-block p{margin:0;line-height:1.6;font-size:14px}
+  .announcement-event{border-left:4px solid var(--gold)}
+  
+  form.contact{display:grid;gap:12px}
+  form.contact input,form.contact textarea{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:12px;font:inherit;background:var(--bg);color:var(--text);transition:.2s}
+  form.contact input:focus,form.contact textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.15)}
+  
+  footer{margin-top:40px;padding:32px 0 50px;background:var(--card-solid);border-top:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center}
+  .footer-copyright{cursor:pointer;transition:color .2s;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px}
+  .footer-copyright:hover{color:var(--emerald);text-decoration-color:var(--gold)}[data-theme="dark"] .footer-copyright:hover{color:var(--gold)}
+  
+  .skeleton{background:linear-gradient(90deg,var(--border) 25%,var(--bg) 50%,var(--border) 75%);background-size:200% 100%;animation:loading 1.5s infinite;border-radius:18px}
+  @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:var(--bg);padding:12px 24px;border-radius:30px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:.3s;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  
+  .progress-wrap{background:var(--border);border-radius:20px;height:24px;overflow:hidden;margin:12px 0;position:relative}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--emerald),var(--gold));border-radius:20px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;transition:width 1s ease}
+  
+  .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:880px){.tools-grid{grid-template-columns:1fr}}
+  .tool-card{cursor:pointer;text-align:center;padding:30px;transition:.2s}
+  .tool-card:hover{transform:translateY(-3px)}
+  .tool-card svg{width:48px;height:48px;stroke:var(--emerald);margin-bottom:12px}[data-theme="dark"] .tool-card svg{stroke:var(--gold)}
+  .tool-card h4{margin:0;font-size:16px;color:var(--text);font-weight:700}
+  
+  .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:880px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+  .service-item{background:var(--bg);border:1px solid var(--border);padding:20px;border-radius:16px;text-align:center}
+  .service-item h4{margin:0 0 6px;color:var(--emerald);font-size:15px}[data-theme="dark"] .service-item h4{color:var(--gold)}
+  .service-item p{margin:0;font-size:12px;color:var(--muted)}
+  
+  .btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);padding:10px 20px;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s;width:100%;margin-top:16px}
+  .btn-outline:hover{background:var(--gold);color:#1f1700}
+  
+  @media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding: 0; }
+    #printArea .card { box-shadow: none; border: none; padding: 0; }
+    #printArea .table-controls, #printArea .section-title, #printArea p.muted { display: none !important; }
+    .table-wrap { max-height: none !important; overflow: visible !important; border: none !important; }
+    table { font-size: 10pt; width: 100%; }
+    th, td { padding: 5px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-top">
+      <div class="brand" aria-label="Jamia Masjid">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L10.5 5.5 7 6l3 2.5.5 3.5.5-3.5 3-2.5-3.5-.5L12 2zm0 7c-3.3 0-6 2.2-6 5v3h2v-3c0-1.7 1.8-3 4-3s4 1.3 4 3v3h2v-3c0-2.8-2.7-5-6-5zM5 19v2h14v-2H5zM2 21v1h20v-1H2z"/></svg>
+        <div id="brandName">JAMIA MASJID <span id="brandSub"></span></div>
+      </div>
+      <div class="header-actions">
+        <select class="lang-select" id="langSelect">
+          <option value="EN">English</option>
+          <option value="UR">اردو</option>
+          <option value="BN">বাংলা</option>
+          <option value="TA">தமிழ்</option>
+        </select>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme">🌙</button>
+        <button class="btn-gold" id="donateTop" data-i18n="donate">Donate</button>
+      </div>
+    </div>
+    <nav aria-label="Primary" id="mainNav">
+      <button class="active" data-page="home" data-i18n="nav_home">Home</button>
+      <button data-page="tools" data-i18n="nav_tools">Tools</button>
+      <button data-page="madrasa" data-i18n="nav_madrasa">Madrasa</button>
+      <button data-page="announcements" id="announceNav" data-i18n="nav_announce">Announcements</button>
+      <button data-page="about" data-i18n="nav_about">About</button>
+      <button data-page="contact" data-i18n="nav_contact">Contact</button>
+    </nav>
+  </div>
+</header>
+
+<div class="announce" id="announceBar" style="display:none">
+  <div class="container" style="overflow:hidden">
+    <div class="announce-track" id="announceTrack"><span>Staff yet to update</span></div>
+  </div>
+</div>
+
+<main class="container">
+  <section id="page-home" class="page active">
+    <div class="card hero" aria-live="polite">
+      <div class="hero-grid">
+        <div>
+          <div class="next-label" id="nextLabel" data-i18n="next_prayer">Next Prayer</div>
+          <div class="next-prayer" id="nextName">Staff yet to update</div>
+          <div class="countdown" id="countdown">--:--:--</div>
+          <div class="time-row" id="nextTimes">
+            <div class="pill"><small data-i18n="azan">Azan</small><strong id="nextAzan">--:--</strong></div>
+            <div class="pill"><small data-i18n="jamat">Jamat</small><strong id="nextJamat">--:--</strong></div>
+          </div>
+          <div style="margin-top:20px">
+            <input type="date" id="datePicker" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px 14px;border-radius:10px;font-size:14px" />
+          </div>
+        </div>
+        <div>
+          <div class="clock" aria-label="London time">
+            <div class="t" id="londonTime">--:--:--</div>
+            <div class="d" id="londonDate">—</div>
+            <div class="h" id="hijriDate">—</div>
+            <div class="tz">Europe / London</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section" id="ramadanCard" style="display:none; border-left:4px solid var(--gold)">
+      <h2 class="section-title" id="ramadanTitle">Ramadan Timings & Duas</h2>
+      <div class="grid-2">
+        <div>
+          <div class="pill" style="background:var(--bg);border:1px solid var(--border);color:var(--text)"><small>Suhoor Ends (Fajr)</small><strong id="suhoorTime">--:--</strong></div>
+          <div class="pill" style="background:var(--bg);border:1px solid var(--border);color:var(--text);margin-top:8px"><small>Iftar (Maghrib)</small><strong id="iftarTime">--:--</strong></div>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:700;margin:0 0 4px">Suhoor Dua:</p>
+          <p style="font-size:12px;color:var(--muted);margin:0 0 8px" id="suhoorDua">—</p>
+          <p style="font-size:13px;font-weight:700;margin:0 0 4px">Iftar Dua:</p>
+          <p style="font-size:12px;color:var(--muted);margin:0" id="iftarDua">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title" data-i18n="today_prayers">Today's Prayers</h2>
+      <div class="prayer-grid" id="prayerGrid" aria-live="polite">
+        <div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <div id="printArea">
+        <div class="card">
+          <div class="table-controls" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+            <h2 class="section-title" style="margin:0" data-i18n="monthly_timetable">Monthly Timetable</h2>
+            <div style="display:flex;gap:6px">
+              <button class="toggle" id="prevMonth">‹</button>
+              <button class="toggle" id="toggleMonth" aria-expanded="false" data-i18n="expand">Expand</button>
+              <button class="toggle" id="nextMonth">›</button>
+              <button class="toggle" id="printBtn">🖨️</button>
+            </div>
+          </div>
+          <h3 id="monthLabel" class="month-label"></h3>
+          <div class="table-wrap">
+            <table class="month-table" aria-label="Monthly prayer timetable">
+              <thead>
+                <tr>
+                  <th rowspan="2" style="min-width:50px">Date</th>
+                  <th colspan="2">Fajr</th><th colspan="2">Dhuhr</th><th colspan="2">Asr</th>
+                  <th colspan="2">Maghrib</th><th colspan="2">Isha</th>
+                </tr>
+                <tr>
+                  <th class="azan-header">Azan</th><th class="jamat-header">Jamat</th>
+                  <th class="azan-header">Azan</th><th class="jamat-header">Jamat</th>
+                  <th class="azan-header">Azan</th><th class="jamat-header">Jamat</th>
+                  <th class="azan-header">Azan</th><th class="jamat-header">Jamat</th>
+                  <th class="azan-header">Azan</th><th class="jamat-header">Jamat</th>
+                </tr>
+              </thead>
+              <tbody id="monthBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="section-title" data-i18n="support_mosque">Support the Mosque</h2>
+        <p id="donateText" data-i18n="donate_desc" style="font-size:14px;line-height:1.6">Your donations keep our doors open, lights on, and community programmes running.</p>
+        
+        <div id="donationGoalCard" style="margin-top:20px;display:none">
+          <p style="font-size:13px;font-weight:700;margin:0 0 6px"><span id="raisedAmount">£0</span> <span data-i18n="raised_of">raised of</span> <span id="goalAmount">£0</span></p>
+          <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%">0%</div></div>
+        </div>
+
+        <ul class="info-list" style="margin:20px 0 0">
+          <li id="zakatCard" style="cursor:pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-6-4.3-9-8.5C1 9.5 3 6 6.5 6c2 0 3.5 1 4.5 2.5C12 7 13.5 6 15.5 6 19 6 21 9.5 19 12.5 16 16.7 12 21z"/></svg>
+            <div><strong data-i18n="zakat_sadaqah">Zakat & Sadaqah</strong><br><span class="muted" data-i18n="click_donate">Click to donate securely.</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="servicesSection" style="display:none">
+      <h2 class="section-title">Mosque Services</h2>
+      <div class="services-grid" id="servicesGrid"></div>
+    </div>
+
+  </section>
+
+  <section id="page-tools" class="page">
+    <div class="tools-grid">
+      <div class="card tool-card" id="qiblaTool">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <h4 data-i18n="qibla">Qibla Compass</h4>
+        <p class="muted" id="qiblaStatus" style="font-size:12px;margin-top:10px">Click to find direction</p>
+        <div id="qiblaArrow" style="font-size:56px;color:var(--gold);transform:rotate(0deg);transition:transform 1s;margin-top:10px">↑</div>
+      </div>
+      <div class="card tool-card" id="zakatTool">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <h4 data-i18n="zakat_calc">Zakat Calculator</h4>
+        <div id="zakatCalc" style="display:none;text-align:left;margin-top:16px">
+          <input type="number" id="zakatCash" placeholder="Cash & Savings (£)" style="width:100%;margin-bottom:8px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
+          <input type="number" id="zakatGold" placeholder="Gold Value (£)" style="width:100%;margin-bottom:8px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
+          <input type="number" id="zakatDebt" placeholder="Debts (£)" style="width:100%;margin-bottom:8px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
+          <button class="btn-gold" id="calcZakatBtn" style="width:100%;margin-top:8px">Calculate 2.5%</button>
+          <p id="zakatResult" style="font-weight:800;color:var(--emerald);margin-top:12px;font-size:16px;text-align:center"></p>
+        </div>
+      </div>
+      <div class="card tool-card" id="tasbihTool">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h4>Digital Tasbih</h4>
+        <div id="tasbihCounter" style="display:none;text-align:center;margin-top:16px">
+          <h1 id="tasbihCount" style="font-size:48px;color:var(--emerald);margin:0">0</h1>
+          <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+            <button class="btn-gold" id="tasbihAdd" style="padding:15px 30px;font-size:18px">Count (+1)</button>
+            <button class="toggle" id="tasbihReset" style="padding:15px 20px">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section" id="dailyContentCard">
+      <h2 class="section-title">Daily Wisdom</h2>
+      <div id="dailyContentBody" style="font-style:italic; text-align:center; font-size:16px; line-height:1.8; color:var(--muted)">
+        <p class="pending-update">Staff yet to update</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="page-madrasa" class="page"><div class="card"><h2 class="section-title" data-i18n="nav_madrasa">Madrasa & Learning</h2><div id="madrasaContent"><p class="pending-update">Staff yet to update</p></div></div></section>
+  <section id="page-announcements" class="page"><div id="announcementsPageContent"><div class="card"><p class="pending-update">Staff yet to update</p></div></div></section>
+  <section id="page-about" class="page"><div class="card"><h2 class="section-title" data-i18n="nav_about">About Us</h2><div id="aboutContent"><p class="pending-update">Staff yet to update</p></div></div></section>
+  <section id="page-contact" class="page">
+    <div class="grid-2">
+      <div class="card">
+        <h2 class="section-title" data-i18n="nav_contact">Contact</h2>
+        <p data-i18n="contact_desc" style="font-size:14px;line-height:1.6">Send us a message — this will open your email app. No data is stored on this website.</p>
+        <form class="contact" id="contactForm" style="margin-top:16px">
+          <input type="text" name="name" placeholder="Your name" required autocomplete="name" />
+          <input type="email" name="email" placeholder="Your email" required autocomplete="email" />
+          <textarea name="message" rows="5" placeholder="Your message" required></textarea>
+          <button type="submit" class="btn-gold" data-i18n="send_email">Send Email</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Information</h2>
+        <ul class="info-list" id="contactInfo">
+          <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone:</strong> <span class="pending-update">Staff yet to update</span></div></li>
+          <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg><div><strong>Email:</strong> <span class="pending-update">Staff yet to update</span></div></li>
+          <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address:</strong> <span class="pending-update">Staff yet to update</span></div></li>
+        </ul>
+        <button class="btn-outline" id="mapsBtn" style="display:none" data-i18n="get_directions">📍 Get Directions</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div id="footerText">© <span id="footerYear"></span> <a href="#" class="footer-copyright" id="footerLegalLink">Jamia Masjid</a>. <span data-i18n="charity_no">Registered Charity No:</span> <span id="footerCharity">Staff yet to update</span></div>
+    <div style="margin-top:8px;opacity:.8">🛡️ This site does not store card details or personal data. 100% Privacy Guaranteed.</div>
+    <div style="margin-top:12px;">
+      <button class="toggle" id="shareBtn" data-i18n="share">Share Website</button>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="donateModal" role="dialog"><div class="modal-card"><div class="modal-head"><h3 data-i18n="donate_safe">Donate – Safe & Secure</h3><button class="x" id="closeDonate">×</button></div><div class="modal-body" id="donateModalBody"><div id="donateLinks"><p class="pending-update">Staff yet to update</p></div><div id="bankSection"></div></div></div></div>
+<div class="modal" id="legalModal" role="dialog"><div class="modal-card"><div class="modal-head"><h3>Copyright & Legal Information</h3><button class="x" id="closeLegal">×</button></div><div class="modal-body"><div style="padding:24px"><h4 style="color:var(--emerald)">Open Source & No Liability</h4><p style="font-size:13px;color:var(--muted)">This website template is an open-source project provided "as is" for the community. Anyone may download, use, and modify it freely. The original creators hold no responsibility, liability, or ownership over the final deployment, content, or operation of the site.</p><h4 style="color:var(--emerald);margin-top:16px">Ownership & Content</h4><p style="font-size:13px;color:var(--muted)">The mosque or organization deploying this template retains full and exclusive ownership and operational responsibility for their specific instance, including all content displayed via the integrated Google Sheet.</p><h4 style="color:var(--emerald);margin-top:16px">Data Protection & Privacy</h4><p style="font-size:13px;color:var(--muted)">This website does not collect, store, or process personal data. No cookies, no analytics, no backend databases. The contact form uses a standard mailto: link. 100% Client-side privacy.</p><div style="background:#fffbf0;border:1px solid #e8d9a0;border-radius:10px;padding:14px;margin-top:16px;font-size:12px;color:#5a4a18"><strong>Donation Notice:</strong> All donation links are managed directly by the mosque. Donations are processed by secure third-party payment providers. This website does not handle, store, or have access to payment card details.</div></div></div></div></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const CONFIG = {
+    SHEET_URL: 'PASTE_YOUR_SHEET_ID_HERE',
+    REFRESH_SECONDS: 300,
+    FALLBACK: { charity_no:'Staff yet to update', phone:'Staff yet to update', email:'Staff yet to update', address:'Staff yet to update' }
+  };
+
+  const i18n = {
+    EN: { donate: "Donate", share: "Share Website", next_prayer: "Next Prayer", azan: "Azan", jamat: "Jamat", today_prayers: "Today's Prayers", monthly_timetable: "Monthly Timetable", expand: "Expand", support_mosque: "Support the Mosque", donate_desc: "Your donations keep our doors open, lights on, and community programmes running.", zakat_sadaqah: "Zakat & Sadaqah", click_donate: "Click to donate securely.", nav_home: "Home", nav_tools: "Tools", nav_madrasa: "Madrasa", nav_announce: "Announcements", nav_about: "About", nav_contact: "Contact", send_email: "Send Email", get_directions: "📍 Get Directions", donate_safe: "Donate – Safe & Secure", charity_no: "Registered Charity No:", raised_of: "raised of", qibla: "Qibla Compass", zakat_calc: "Zakat Calculator" },
+    UR: { donate: "عطیہ", share: "ویب سائٹ شیئر کریں", next_prayer: "اگلی نماز", azan: "اذان", jamat: "جماعت", today_prayers: "آج کی نمازیں", monthly_timetable: "ماہانہ وقت", expand: "کھولیں", support_mosque: "مسجد کی مدد کریں", donate_desc: "آپ کے عطیات ہماری دروازے کھلے رکھتے ہیں۔", zakat_sadaqah: "زکوۃ و صدقہ", click_donate: "محفوظ طریقے سے عطیہ دینے کے لیے کلک کریں۔", nav_home: "ہوم", nav_tools: "ٹولز", nav_madrasa: "مدرسہ", nav_announce: "اعلانات", nav_about: "ہمارے بارے میں", nav_contact: "رابطہ", send_email: "ای میل بھیجیں", get_directions: "📍 رہنمائی حاصل کریں", donate_safe: "عطیہ – محفوظ و نجی", charity_no: "رجسٹرڈ چیرٹی نمبر:", raised_of: "میں سے اکٹھا کیا", qibla: "قبلہ نما", zakat_calc: "زکوۃ کیلکولیٹر" },
+    BN: { donate: "দান", share: "ওয়েবসাইট শেয়ার করুন", next_prayer: "পরবর্তী নামাজ", azan: "আজান", jamat: "জামাত", today_prayers: "আজকের নামাজ", monthly_timetable: "মাসিক সময়সূচি", expand: "প্রসারিত করুন", support_mosque: "মসজিদকে সহায়তা করুন", donate_desc: "আপনার অনুদান আমাদের দরজা খোলা রাখে।", zakat_sadaqah: "যাকাত ও সদকা", click_donate: "নিরাপদে দান করতে ক্লিক করুন।", nav_home: "হোম", nav_tools: "টুলস", nav_madrasa: "মাদ্রাসা", nav_announce: "ঘোষণা", nav_about: "আমাদের সম্পর্কে", nav_contact: "যোগাযোগ", send_email: "ইমেইল পাঠান", get_directions: "📍 দিকনির্দেশ নিন", donate_safe: "দান – নিরাপদ", charity_no: "নিবন্ধিত দাতব্য নং:", raised_of: "এর মধ্যে সংগৃহীত", qibla: "কিবলা কম্পাস", zakat_calc: "যাকাত ক্যালকুলেটর" },
+    TA: { donate: "நன்கொடை", share: "வலைத்தளத்தை பகிர்", next_prayer: "அடுத்த தொழுகை", azan: "அஸான்", jamat: "ஜமாஅத்", today_prayers: "இன்றைய தொழுகைகள்", monthly_timetable: "மாதாந்திர நேர அட்டவணை", expand: "விரிவாக்கு", support_mosque: "பள்ளிவாசலை ஆதரிக்கவும்", donate_desc: "உங்கள் நன்கொடைகள் எங்கள் கதவுகளைத் திறந்து வைக்கின்றன.", zakat_sadaqah: "ஸகாத் & ஸதகா", click_donate: "பாதுகாப்பாக நன்கொடை அளிக்க கிளிக் செய்யவும்.", nav_home: "முகப்பு", nav_tools: "கருவிகள்", nav_madrasa: "மதரஸா", nav_announce: "அறிவிப்புகள்", nav_about: "எங்களை பற்றி", nav_contact: "தொடர்பு", send_email: "மின்னஞ்சல் அனுப்பு", get_directions: "📍 வழிகாட்டி பெறு", donate_safe: "நன்கொடை – பாதுகாப்பானது", charity_no: "பதிவு செய்யப்பட்ட தொண்டு எண்:", raised_of: "இல் திரட்டப்பட்டது", qibla: "கிப்லா திசைகாட்டி", zakat_calc: "ஸகாத் கால்குலேட்டர்" }
+  };
+
+  const MONTH_TABS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const FALLBACK_TEXT = 'Staff yet to update';
+  
+  function extractSheetId(input) {
+    const s = String(input || '').trim();
+    const m = s.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    if (m) return m[1];
+    if (/^[a-zA-Z0-9-_]{20,}$/.test(s)) return s;
+    return '';
+  }
+  
+  const SHEET_ID = extractSheetId(CONFIG.SHEET_URL);
+  const $ = s => document.getElementById(s);
+  const $$ = s => document.querySelectorAll(s);
+  
+  let DATA = {};
+  let PRAYER_SEQUENCE = [];
+  let COUNTDOWN_TIMER = null;
+  let CURRENT_LANG = 'EN';
+  let CURRENT_MONTH_IDX = new Date().getMonth();
+  let SELECTED_DATE = null;
+
+  function londonNow() {
+    const fmt = new Intl.DateTimeFormat('en-CA', { timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+    const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
+    return new Date(p.year + '-' + p.month + '-' + p.day + 'T' + p.hour + ':' + p.minute + ':' + p.second);
+  }
+
+  function parseTime(str) {
+    if (str === null || str === undefined || str === '') return null;
+    str = String(str).trim();
+    if (/^\d*\.\d+$/.test(str)) {
+      const totalMin = Math.round(parseFloat(str) * 24 * 60);
+      const h = Math.floor(totalMin / 60) % 24;
+      const m = totalMin % 60;
+      return { h: h, m: m, str: String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') };
+    }
+    let s = str.toLowerCase().replace(/\./g, ':').trim();
+    const ampmMatch = s.match(/(am|pm)$/);
+    const isPM = ampmMatch && ampmMatch[1] === 'pm';
+    const isAM = ampmMatch && ampmMatch[1] === 'am';
+    if (ampmMatch) s = s.replace(/(am|pm)$/, '').trim();
+    s = s.replace(/\s/g, '');
+    let h, m = 0;
+    if (s.includes(':')) {
+      const parts = s.split(':');
+      h = parseInt(parts[0], 10);
+      m = parseInt(parts[1], 10) || 0;
+    } else {
+      h = parseInt(s, 10);
+    }
+    if (isNaN(h)) return null;
+    if (isPM && h < 12) h += 12;
+    if (isAM && h === 12) h = 0;
+    if (h < 0 || h > 23 || isNaN(m) || m < 0 || m > 59) return null;
+    return { h: h, m: m, str: String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') };
+  }
+
+  function parseSheetDate(v) {
+    if (v === null || v === undefined || v === '') return null;
+    const s = String(v).trim();
+    let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) return { y:+m[1], mo:+m[2], d:+m[3] };
+    m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (m) {
+      let a=+m[1], b=+m[2], y=+m[3];
+      if (a > 12) return { y: y, mo: b, d: a };
+      if (b > 12) return { y: y, mo: a, d: b };
+      return { y: y, mo: a, d: b };
+    }
+    if (/^\d+(\.\d+)?$/.test(s)) {
+      const serial = parseFloat(s);
+      const epoch = Date.UTC(1899, 11, 30);
+      const dt = new Date(epoch + Math.round(serial) * 86400000);
+      return { y:dt.getUTCFullYear(), mo:dt.getUTCMonth()+1, d:dt.getUTCDate() };
+    }
+    return null;
+  }
+
+  function sameYMD(v, y, mo, d) {
+    const p = parseSheetDate(v);
+    return !!p && p.y === y && p.mo === mo && p.d === d;
+  }
+
+  function inRangeYMD(fromV, toV, y, mo, d) {
+    const cur = y * 10000 + mo * 100 + d;
+    if (fromV) { const f = parseSheetDate(fromV); if (f && cur < f.y * 10000 + f.mo * 100 + f.d) return false; }
+    if (toV) { const t = parseSheetDate(toV); if (t && cur > t.y * 10000 + t.mo * 100 + t.d) return false; }
+    return true;
+  }
+
+  function timeToDate(base, t) {
+    if (!t) return null;
+    const d = new Date(base);
+    d.setHours(t.h, t.m, 0, 0);
+    return d;
+  }
+
+  function fmtTime(d) {
+    return d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', hour12:false });
+  }
+
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function parseCSVText(text) {
+    const rows = [];
+    let row = [], cur = '', inQ = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i], next = text[i+1];
+      if (inQ) {
+        if (c === '"' && next === '"') { cur += '"'; i++; }
+        else if (c === '"') { inQ = false; }
+        else cur += c;
+      } else {
+        if (c === '"') { inQ = true; }
+        else if (c === ',') { row.push(cur); cur = ''; }
+        else if (c === '\r') {}
+        else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+        else cur += c;
+      }
+    }
+    if (cur.length || row.length) { row.push(cur); rows.push(row); }
+    const filtered = rows.filter(r => r.some(c => c.trim() !== ''));
+    if (!filtered.length) return [];
+    const headers = filtered[0].map(h => h.trim());
+    return filtered.slice(1).map(r => {
+      const o = {};
+      headers.forEach((h, i) => o[h] = (r[i] || '').trim());
+      return o;
+    });
+  }
+
+  async function fetchTab(tabName) {
+    if (!SHEET_ID) return [];
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&headers=1&_=${Date.now()}`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      return parseCSVText(text);
+    } catch (e) {
+      console.warn(`Tab "${tabName}" could not be read.`, e);
+      return [];
+    }
+  }
+
+  function applyLang(lang) {
+    CURRENT_LANG = lang;
+    document.documentElement.lang = lang === 'UR' ? 'ur' : lang === 'BN' ? 'bn' : lang === 'TA' ? 'ta' : 'en';
+    const dict = i18n[lang] || i18n.EN;
+    $$('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key]) el.textContent = dict[key];
+    });
+    const now = londonNow();
+    processContent(now.getFullYear(), now.getMonth()+1, now.getDate());
+  }
+
+  function updateClock() {
+    const now = londonNow();
+    $('londonTime').textContent = fmtTime(now) + ':' + String(now.getSeconds()).padStart(2, '0');
+    $('londonDate').textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    try {
+      $('hijriDate').textContent = new Intl.DateTimeFormat('en-SA-u-ca-islamic', { day:'numeric', month:'long', year:'numeric' }).format(now) + ' AH';
+    } catch (e) {
+      $('hijriDate').textContent = '—';
+    }
+  }
+
+  function processSettings() {
+    const s = {};
+    (DATA.settings || []).forEach(r => s[r.Key] = r.Value);
+    if (s.Mosque_Name) $('brandName').innerHTML = s.Mosque_Name + ' <span id="brandSub">' + (s.Mosque_Subtitle || '') + '</span>';
+    if (s.Charity_No) $('footerCharity').textContent = s.Charity_No;
+    if (s.Map_URL) {
+      $('mapsBtn').style.display = 'block';
+      $('mapsBtn').onclick = () => window.open(s.Map_URL, '_blank');
+    }
+    if (s.Donation_Goal && s.Donation_Raised) {
+      $('donationGoalCard').style.display = 'block';
+      $('raisedAmount').textContent = '£' + s.Donation_Raised;
+      $('goalAmount').textContent = '£' + s.Donation_Goal;
+      const pct = Math.min(100, (s.Donation_Raised / s.Donation_Goal) * 100);
+      $('progressBar').style.width = pct + '%';
+      $('progressBar').textContent = Math.round(pct) + '%';
+    }
+    if (s.Ramadan_Start && s.Ramadan_End) {
+      const now = londonNow();
+      if (inRangeYMD(s.Ramadan_Start, s.Ramadan_End, now.getFullYear(), now.getMonth() + 1, now.getDate())) {
+        $('ramadanCard').style.display = 'block';
+        if (DATA.ramadanData && DATA.ramadanData[0]) {
+          $('suhoorDua').textContent = DATA.ramadanData[0].Suhoor_Dua_AR + ' (' + DATA.ramadanData[0].Suhoor_Dua_EN + ')';
+          $('iftarDua').textContent = DATA.ramadanData[0].Iftar_Dua_AR + ' (' + DATA.ramadanData[0].Iftar_Dua_EN + ')';
+        }
+      }
+    }
+  }
+
+  function processContent(year, month, date) {
+    const lang = CURRENT_LANG;
+    const orFallback = (v, key) => v || CONFIG.FALLBACK[key] || FALLBACK_TEXT;
+    
+    const janazah = (DATA.janazahData || []).find(j => sameYMD(j.Date, year, month, date));
+    if (janazah) {
+      $('announceBar').style.display = 'block';
+      $('announceBar').style.background = '#8B0000';
+      $('announceTrack').innerHTML = '<span>⚠️ JANAZAH: ' + janazah.Name + ' at ' + janazah.Time + ', ' + janazah.Location + '</span>'.repeat(10);
+    } else {
+      const allAnnounces = (DATA.announceData || []).filter(r => r['Content_' + lang] && r['Content_' + lang].trim() && inRangeYMD(r.Active_From, r.Active_To, year, month, date));
+      const bannerAnnounces = allAnnounces.filter(r => (r.Banner || '').trim().toLowerCase() === 'yes');
+      const eventAnnounces = allAnnounces.filter(r => (r.Banner || '').trim().toLowerCase() !== 'yes');
+      
+      if (bannerAnnounces.length) {
+        $('announceNav').style.display = 'block';
+        $('announceBar').style.display = 'block';
+        $('announceBar').style.background = 'var(--emerald)';
+        const track = bannerAnnounces.map(a => '<span>' + a['Content_' + lang] + '</span>').join('');
+        $('announceTrack').innerHTML = track + track;
+      } else {
+        $('announceBar').style.display = 'none';
+        if (!eventAnnounces.length) $('announceNav').style.display = 'none';
+      }
+      
+      let pageHtml = '';
+      if (bannerAnnounces.length) {
+        pageHtml += '<h2 class="section-title">Announcements</h2>';
+        pageHtml += bannerAnnounces.map(a => '<div class="card" style="margin-bottom:12px"><p>' + a['Content_' + lang] + '</p></div>').join('');
+      }
+      if (eventAnnounces.length) {
+        pageHtml += '<h2 class="section-title" style="margin-top:28px">Programmes & Events</h2>';
+        pageHtml += eventAnnounces.map(a => '<div class="card announcement-event"><p>' + a['Content_' + lang].replace(/\n/g, '<br>') + '</p></div>').join('');
+      }
+      $('announcementsPageContent').innerHTML = pageHtml || '<div class="card"><p class="pending-update">' + FALLBACK_TEXT + '</p></div>';
+    }
+
+    if (DATA.dailyData && DATA.dailyData.length > 0) {
+      const todayRow = DATA.dailyData.find(r => sameYMD(r.Date, year, month, date));
+      const item = todayRow || DATA.dailyData[Math.floor(Math.random() * DATA.dailyData.length)];
+      $('dailyContentBody').innerHTML = '"' + (item['Text_' + lang] || item.Text_EN || '—') + '"';
+    } else {
+      $('dailyContentBody').innerHTML = '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    }
+
+    const bankRows = (DATA.bankData || []).filter(r => Object.values(r).some(v => v && v.trim()));
+    $('bankSection').innerHTML = bankRows.length ? bankRows.map(b => 
+      '<div class="bank-account-name">' + (b.Account_Name || 'Bank Transfer') + '</div>' +
+      '<div class="bank"><strong>Account Name:</strong> ' + orFallback(b.Bank_Name) + '\n<strong>Sort Code:</strong> ' + orFallback(b.Sort_Code) + '\n<strong>Account:</strong> ' + orFallback(b.Account_No) + '</div>'
+    ).join('') : '<div class="bank"><span class="pending-update">' + FALLBACK_TEXT + '</span></div>';
+    
+    const links = (DATA.linksData || []).filter(r => r.URL && r.URL.trim());
+    $('donateLinks').innerHTML = links.length ? links.map(r => '<a href="' + r.URL + '" target="_blank" rel="noopener" class="donate-btn"><strong>' + (r.Button_Text || 'Donate via ' + r.Name) + '</strong><span>Secure external payment</span></a>').join('') : '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+
+    $('madrasaContent').innerHTML = (DATA.madrasaData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
+      '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
+    ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    
+    $('aboutContent').innerHTML = (DATA.aboutData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
+      '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
+    ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+
+    const c = (DATA.contactData || [])[0] || {};
+    $('contactInfo').innerHTML = 
+      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone:</strong> ' + orFallback(c.Phone, 'phone') + '</div></li>' +
+      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg><div><strong>Email:</strong> ' + orFallback(c.Email, 'email') + '</div></li>' +
+      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address:</strong> ' + (c['Address_' + lang] || c.Address_EN || FALLBACK_TEXT).replace(/\n/g, '<br>') + '</div></li>';
+    
+    $('contactForm').onsubmit = e => {
+      e.preventDefault();
+      const f = e.target;
+      window.location.href = 'mailto:' + c.Email + '?subject=Website Contact from ' + encodeURIComponent(f.name.value) + '&body=' + encodeURIComponent(f.message.value) + '%0A%0AFrom: ' + encodeURIComponent(f.name.value) + ' (' + encodeURIComponent(f.email.value) + ')';
+    };
+
+    if (DATA.servicesData && DATA.servicesData.length > 0) {
+      $('servicesSection').style.display = 'block';
+      $('servicesGrid').innerHTML = DATA.servicesData.map(s => 
+        '<div class="service-item"><h4>' + (s['Title_' + lang] || s.Title_EN || '') + '</h4><p>' + (s['Content_' + lang] || s.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
+      ).join('');
+    } else {
+      $('servicesSection').style.display = 'none';
+    }
+  }
+
+  function buildPrayerSequence(year, month, date, dayOfWeek) {
+    const todayRow = (DATA.monthData || []).find(r => parseInt(r.Year) === year && parseInt(r.Date) === date);
+    const getAzan = (p) => parseTime(todayRow ? todayRow[p + '_Azan'] : null);
+    const getJamat = (p) => parseTime(todayRow ? (todayRow[p + '_Jamat1'] || todayRow[p + '_Jamat']) : null);
+    const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    PRAYER_SEQUENCE = [];
+    const jummahRow = (DATA.jummahData || []).filter(j => !j.Start_Year || parseInt(j.Start_Year) <= year).sort((a, b) => (parseInt(b.Start_Year) || 0) - (parseInt(a.Start_Year) || 0))[0];
+    
+    prayers.forEach(p => {
+      const azan = getAzan(p);
+      let jamat = getJamat(p);
+      let name = p;
+      const extraJamats = [];
+      if (p === 'Dhuhr' && dayOfWeek === 5 && jummahRow) {
+        if (jummahRow.Jamat1) { jamat = parseTime(jummahRow.Jamat1); name = "Jumu'ah"; }
+        if (jummahRow.Jamat2 && parseTime(jummahRow.Jamat2)) extraJamats.push({ time: parseTime(jummahRow.Jamat2), label: '2nd Jamat' });
+      }
+      if (azan || jamat) {
+        const jamats = [];
+        if (jamat) jamats.push({ time: jamat, label: 'Jamat' });
+        jamats.push(...extraJamats);
+        (DATA.extraData || []).filter(e => e.Prayer === p && inRangeYMD(e.Start_Date, e.End_Date, year, month, date)).forEach(e => {
+          if (e.Jamat2 && parseTime(e.Jamat2)) jamats.push({ time: parseTime(e.Jamat2), label: 'Jamat 2' });
+          if (e.Jamat3 && parseTime(e.Jamat3)) jamats.push({ time: parseTime(e.Jamat3), label: 'Jamat 3' });
+        });
+        PRAYER_SEQUENCE.push({ name: name, azan: azan, jamats: jamats, prayer: p });
+      }
+    });
+    
+    const eid = (DATA.eidData || []).find(e => sameYMD(e.Gregorian_Date, year, month, date));
+    if (eid) {
+      const ej = [];
+      ['Jamat1', 'Jamat2', 'Jamat3'].forEach((j, i) => {
+        if (eid[j] && parseTime(eid[j])) ej.push({ time: parseTime(eid[j]), label: 'Eid Jamat ' + (i + 1) });
+      });
+      if (ej.length) PRAYER_SEQUENCE.unshift({ name: eid.Eid_Name || 'Eid', azan: null, jamats: ej, isEid: true });
+    }
+  }
+
+  function renderUI(now) {
+    const grid = $('prayerGrid');
+    grid.innerHTML = '';
+    grid.classList.remove('has-extra');
+    let nextIdx = -1, nextJamatIdx = -1, nowMin = now.getHours() * 60 + now.getMinutes();
+    
+    if(PRAYER_SEQUENCE.length === 0) {
+        grid.innerHTML = '<div class="pray"><div class="n">' + FALLBACK_TEXT + '</div></div>';
+        $('nextName').textContent = FALLBACK_TEXT;
+        $('nextAzan').textContent = '--:--';
+        $('nextJamat').textContent = '--:--';
+        return;
+    }
+
+    PRAYER_SEQUENCE.forEach((p, pi) => {
+      if (p.jamats.length) {
+        p.jamats.forEach((j, ji) => {
+          if (j.time) {
+            const jMin = j.time.h * 60 + j.time.m;
+            if (jMin > nowMin && nextIdx === -1) { nextIdx = pi; nextJamatIdx = ji; }
+          }
+        });
+      } else if (p.azan) {
+        const aMin = p.azan.h * 60 + p.azan.m;
+        if (aMin > nowMin && nextIdx === -1) { nextIdx = pi; nextJamatIdx = -1; }
+      }
+    });
+    
+    if (nextIdx === -1 && PRAYER_SEQUENCE.length) {
+      nextIdx = 0;
+      nextJamatIdx = PRAYER_SEQUENCE[0].jamats.length ? 0 : -1;
+    }
+    if (PRAYER_SEQUENCE.length > 5) grid.classList.add('has-extra');
+    
+    PRAYER_SEQUENCE.forEach((p, pi) => {
+      const div = document.createElement('div');
+      div.className = 'pray' + (pi === nextIdx ? ' next' : '') + (p.isEid ? ' eid' : '');
+      div.innerHTML = 
+        '<div class="n">' + p.name + (p.isEid ? '<span class="eid-badge">EID</span>' : '') + '</div>' +
+        (p.azan ? '<div class="azan">' + p.azan.str + '</div><div class="lab">Azan</div>' : '') +
+        (p.jamats.length ? p.jamats.map(j => '<div class="jam"><strong>' + (j.time ? j.time.str : '--:--') + '</strong><br><span class="lab">' + j.label + '</span></div>').join('') : '<div class="jam"><span class="pending-update">' + FALLBACK_TEXT + '</span></div>');
+      grid.appendChild(div);
+    });
+    
+    if (nextIdx !== -1) {
+      const np = PRAYER_SEQUENCE[nextIdx];
+      $('nextName').textContent = np.name;
+      $('nextAzan').textContent = np.azan ? np.azan.str : '--:--';
+      if (np.jamats.length && nextJamatIdx !== -1) {
+        $('nextJamat').textContent = np.jamats[nextJamatIdx].time ? np.jamats[nextJamatIdx].time.str : '--:--';
+        $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase() + ' ' + np.jamats[nextJamatIdx].label.toUpperCase();
+      } else {
+        $('nextJamat').textContent = '--:--';
+        $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase();
+      }
+    }
+  }
+
+  function renderMonthTable(year, monthIdx) {
+    const tabName = MONTH_TABS[monthIdx];
+    $('monthLabel').textContent = tabName + ' ' + year;
+    fetchTab(tabName).then(monthData => {
+      DATA.monthData = monthData;
+      const tbody = $('monthBody');
+      const today = londonNow().getDate();
+      const todayMonth = londonNow().getMonth();
+      const days = new Date(year, monthIdx + 1, 0).getDate();
+      let html = '';
+      for (let d = 1; d <= days; d++) {
+        const row = (monthData || []).find(r => parseInt(r.Year) === year && parseInt(r.Date) === d);
+        const isToday = d === today && monthIdx === todayMonth;
+        const getAzan = (p) => { const t = parseTime(row ? row[p + '_Azan'] : null); return t ? t.str : '—'; };
+        const getJamat = (p) => { const t = parseTime(row ? (row[p + '_Jamat1'] || row[p + '_Jamat']) : null); return t ? t.str : '—'; };
+        html += '<tr class="' + (isToday ? 'today' : '') + '">' +
+          '<td class="date-cell">' + d + '</td>' +
+          '<td class="azan-cell">' + getAzan('Fajr') + '</td><td class="jamat-cell">' + getJamat('Fajr') + '</td>' +
+          '<td class="azan-cell">' + getAzan('Dhuhr') + '</td><td class="jamat-cell">' + getJamat('Dhuhr') + '</td>' +
+          '<td class="azan-cell">' + getAzan('Asr') + '</td><td class="jamat-cell">' + getJamat('Asr') + '</td>' +
+          '<td class="azan-cell">' + getAzan('Maghrib') + '</td><td class="jamat-cell">' + getJamat('Maghrib') + '</td>' +
+          '<td class="azan-cell">' + getAzan('Isha') + '</td><td class="jamat-cell">' + getJamat('Isha') + '</td>' +
+        '</tr>';
+      }
+      tbody.innerHTML = html || '<tr><td colspan="11" style="text-align:center;padding:18px" class="pending-update">' + FALLBACK_TEXT + '. Please check back soon.</td></tr>';
+    });
+  }
+
+  function startCountdown() {
+    if (COUNTDOWN_TIMER) clearInterval(COUNTDOWN_TIMER);
+    COUNTDOWN_TIMER = setInterval(() => {
+      if (PRAYER_SEQUENCE.length === 0) {
+        $('countdown').textContent = '--:--:--';
+        return;
+      }
+      const now = londonNow();
+      let target = null;
+      for (let pi = 0; pi < PRAYER_SEQUENCE.length; pi++) {
+        const p = PRAYER_SEQUENCE[pi];
+        if (p.jamats.length) {
+          for (let ji = 0; ji < p.jamats.length; ji++) {
+            const t = timeToDate(now, p.jamats[ji].time);
+            if (t && t > now) { target = t; break; }
+          }
+        } else if (p.azan) {
+          const t = timeToDate(now, p.azan);
+          if (t && t > now) target = t;
+        }
+        if (target) break;
+      }
+      if (!target) {
+        const np = PRAYER_SEQUENCE.find(p => p.prayer === 'Fajr');
+        if (np && np.azan) {
+          target = timeToDate(now, np.azan);
+          target.setDate(target.getDate() + 1);
+        }
+      }
+      if (target) {
+        const diff = target - now;
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const timeStr = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+        $('countdown').textContent = timeStr;
+      } else {
+        $('countdown').textContent = '--:--:--';
+      }
+    }, 1000);
+  }
+
+  async function init() {
+    const now = londonNow();
+    const year = now.getFullYear();
+    const monthIdx = now.getMonth();
+    const month = monthIdx + 1;
+    const date = now.getDate();
+    const monthName = MONTH_TABS[monthIdx];
+    
+    try {
+      const [settings, monthData, jummahData, eidData, taraweehData, extraData, announceData, madrasaData, bankData, linksData, contactData, aboutData, giftAidData, ramadanData, dailyData, janazahData, servicesData] = await Promise.all([
+        fetchTab('Settings'), fetchTab(monthName), fetchTab('Jummah'), fetchTab('Eid'), fetchTab('Taraweeh'), fetchTab('ExtraJamats'),
+        fetchTab('Announcements'), fetchTab('Madrasa'), fetchTab('Bank'), fetchTab('DonationLinks'), fetchTab('Contact'),
+        fetchTab('About'), fetchTab('GiftAid'), fetchTab('Ramadan'), fetchTab('DailyContent'), fetchTab('Janazah'), fetchTab('Services')
+      ]);
+      DATA = { settings, monthData, jummahData, eidData, taraweehData, extraData, announceData, madrasaData, bankData, linksData, contactData, aboutData, giftAidData, ramadanData, dailyData, janazahData, servicesData };
+      localStorage.setItem('cachedData', JSON.stringify(DATA));
+    } catch (e) {
+      const cache = localStorage.getItem('cachedData');
+      if (cache) { DATA = JSON.parse(cache); showToast("Offline Mode: Showing cached times"); } else { return; }
+    }
+
+    processSettings();
+    processContent(year, month, date);
+    buildPrayerSequence(year, month, date, now.getDay());
+    renderUI(now);
+    renderMonthTable(year, CURRENT_MONTH_IDX);
+    startCountdown();
+    setTimeout(init, CONFIG.REFRESH_SECONDS * 1000);
+  }
+
+  // --- Bulletproof Event Bindings ---
+  
+  // Navigation
+  $$('nav button').forEach(btn => {
+    btn.onclick = () => {
+      $$('nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      $$('.page').forEach(p => p.classList.remove('active'));
+      const targetPage = $('page-' + btn.dataset.page);
+      if (targetPage) targetPage.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  });
+
+  // Modals
+  function openModal(m) { if (m) { m.classList.add('show'); document.body.style.overflow = 'hidden'; } }
+  function closeModal(m) { if (m) { m.classList.remove('show'); document.body.style.overflow = ''; } }
+
+  $('donateTop').onclick = () => openModal($('donateModal'));
+  $('zakatCard').onclick = () => openModal($('donateModal'));
+  $('closeDonate').onclick = () => closeModal($('donateModal'));
+  $('footerLegalLink').onclick = (e) => { e.preventDefault(); openModal($('legalModal')); };
+  $('closeLegal').onclick = () => closeModal($('legalModal'));
+
+  // Theme Toggle
+  const themeBtn = $('themeToggle');
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeBtn.textContent = '☀️';
+  }
+  themeBtn.onclick = () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      themeBtn.textContent = '🌙';
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeBtn.textContent = '☀️';
+      localStorage.setItem('theme', 'dark');
+    }
+  };
+
+  // Language Select
+  $('langSelect').onchange = (e) => applyLang(e.target.value);
+
+  // Clock
+  updateClock();
+  setInterval(updateClock, 1000);
+  $('footerYear').textContent = new Date().getFullYear();
+
+  // Share Button
+  $('shareBtn').onclick = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title:'Jamia Masjid', url:window.location.href }); } catch (e) {}
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      showToast('Link copied to clipboard!');
+    }
+  };
+
+  // Tools
+  $('qiblaTool').onclick = () => {
+    if (!navigator.geolocation) { showToast("Location not supported by device"); return; }
+    $('qiblaStatus').textContent = "Locating...";
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude, lon = pos.coords.longitude;
+      const kaabaLat = 21.4225, kaabaLon = 39.8262;
+      const phi1 = lat * Math.PI / 180, phi2 = kaabaLat * Math.PI / 180, deltaLambda = (kaabaLon - lon) * Math.PI / 180;
+      const y = Math.sin(deltaLambda) * Math.cos(phi2);
+      const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
+      const theta = Math.atan2(y, x) * 180 / Math.PI;
+      const compass = (theta + 360) % 360;
+      $('qiblaArrow').style.transform = `rotate(${compass}deg)`;
+      $('qiblaStatus').textContent = `Point arrow to ${Math.round(compass)}°`;
+      
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission().then(state => {
+          if (state === 'granted') {
+            window.addEventListener('deviceorientation', e => {
+              if (e.webkitCompassHeading) {
+                const diff = (e.webkitCompassHeading - compass + 360) % 360;
+                $('qiblaArrow').style.transform = `rotate(${-diff}deg)`;
+              }
+            });
+          }
+        });
+      }
+    }, () => showToast("Location access denied"));
+  };
+
+  $('zakatTool').onclick = (e) => {
+    if (!e.target.closest('#zakatCalc')) {
+      const calc = $('zakatCalc');
+      calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
+    }
+  };
+
+  $('calcZakatBtn').onclick = () => {
+    const c = parseFloat($('zakatCash').value) || 0;
+    const g = parseFloat($('zakatGold').value) || 0;
+    const d = parseFloat($('zakatDebt').value) || 0;
+    const net = c + g - d;
+    if (net < 0) { $('zakatResult').textContent = "No Zakat due"; return; }
+    const zakat = net * 0.025;
+    $('zakatResult').textContent = `Zakat Due: £${zakat.toFixed(2)}`;
+  };
+
+  let tasbihCount = parseInt(localStorage.getItem('tasbihCount') || '0');
+  $('tasbihCount').textContent = tasbihCount;
+  $('tasbihTool').onclick = (e) => {
+    if (!e.target.closest('#tasbihCounter')) {
+      const c = $('tasbihCounter');
+      c.style.display = c.style.display === 'block' ? 'none' : 'block';
+    }
+  };
+  $('tasbihAdd').onclick = () => {
+    tasbihCount++;
+    localStorage.setItem('tasbihCount', tasbihCount);
+    $('tasbihCount').textContent = tasbihCount;
+  };
+  $('tasbihReset').onclick = () => {
+    tasbihCount = 0;
+    localStorage.setItem('tasbihCount', tasbihCount);
+    $('tasbihCount').textContent = tasbihCount;
+  };
+
+  // Date Picker
+  $('datePicker').addEventListener('change', e => {
+    SELECTED_DATE = e.target.value ? new Date(e.target.value + 'T00:00:00') : null;
+    const targetDate = SELECTED_DATE || londonNow();
+    buildPrayerSequence(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate(), targetDate.getDay());
+    renderUI(targetDate);
+  });
+
+  // Month Table Controls
+  $('prevMonth').onclick = () => {
+    CURRENT_MONTH_IDX--;
+    if (CURRENT_MONTH_IDX < 0) CURRENT_MONTH_IDX = 11;
+    renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
+  };
+  
+  $('nextMonth').onclick = () => {
+    CURRENT_MONTH_IDX++;
+    if (CURRENT_MONTH_IDX > 11) CURRENT_MONTH_IDX = 0;
+    renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
+  };
+  
+  $('toggleMonth').onclick = function() {
+    const expanded = this.getAttribute('aria-expanded') === 'true';
+    document.querySelector('.table-wrap').style.maxHeight = expanded ? '400px' : 'none';
+    this.textContent = expanded ? 'Expand' : 'Collapse';
+    this.setAttribute('aria-expanded', !expanded);
+  };
+  
+  $('printBtn').onclick = () => window.print();
+
+  // Start App
+  init();
+});
+</script>
+</body>
+</html>
