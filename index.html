@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0A3622">
-<!-- Mosque Emoji Favicon for Browser Tab -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕌</text></svg>">
 <title>Jamia Masjid – Prayer Times & Community</title>
 <style>
@@ -17,13 +16,17 @@
     --radius:20px; --azan-color:#2d7a4f; --jamat-color:#0A3622;
   }
   [data-theme="dark"] {
+    --emerald:#10b981; --emerald-2:#059669; --emerald-light:#064e3b;
+    --gold:#fbbf24; --gold-2:#f59e0b; --gold-light:#fcd34d;
     --bg:#050807; --card:#0d130f; --text:#e8efe9; --muted:#7a8a80;
     --border:#1a241d; --shadow:0 8px 24px -4px rgba(0,0,0,.4); --shadow-lg:0 16px 40px -8px rgba(0,0,0,.6);
     --card-solid:#0d130f;
+    --azan-color:#10b981; --jamat-color:#fbbf24;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Poppins,Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-  a{color:inherit}img{max-width:100%}.container{max-width:1140px;margin:0 auto;padding:0 20px}
+  /* FIX: Added flex and min-height to push footer to the bottom on all pages */
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Poppins,Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;display:flex;flex-direction:column;min-height:100vh}
+  a{color:inherit}img{max-width:100%}.container{max-width:1140px;margin:0 auto;padding:0 20px;width:100%}
   
   header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
   [data-theme="dark"] header{background:rgba(5,8,7,.85)}
@@ -53,7 +56,8 @@
   .announce span::before{content:"✦";color:var(--gold);font-size:10px}
   @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
   
-  main{padding:30px 0 80px;overflow-x:hidden}
+  /* FIX: Added flex-grow to main so it takes up empty space */
+  main{padding:30px 0 80px;overflow-x:hidden;flex:1 0 auto;width:100%}
   .page{display:none}.page.active{display:block;animation:fade .4s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   
@@ -153,9 +157,7 @@
   form.contact input,form.contact textarea{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:12px;font:inherit;background:var(--bg);color:var(--text);transition:.2s}
   form.contact input:focus,form.contact textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.15)}
   
-  footer{margin-top:40px;padding:32px 0 50px;background:var(--card-solid);border-top:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center}
-  .footer-copyright{cursor:pointer;transition:color .2s;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px}
-  .footer-copyright:hover{color:var(--emerald);text-decoration-color:var(--gold)}[data-theme="dark"] .footer-copyright:hover{color:var(--gold)}
+  footer{margin-top:auto;padding:20px 0;background:var(--card-solid);border-top:1px solid var(--border);color:var(--muted);font-size:12px;text-align:center;flex-shrink:0}
   
   .skeleton{background:linear-gradient(90deg,var(--border) 25%,var(--bg) 50%,var(--border) 75%);background-size:200% 100%;animation:loading 1.5s infinite;border-radius:18px}
   @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -177,20 +179,34 @@
   @media(max-width:880px){.services-grid{grid-template-columns:repeat(2,1fr)}}
   .service-item{background:var(--bg);border:1px solid var(--border);padding:20px;border-radius:16px;text-align:center}
   .service-item h4{margin:0 0 6px;color:var(--emerald);font-size:15px}[data-theme="dark"] .service-item h4{color:var(--gold)}
-  .service-item p{margin:0;font-size:12px;color:var(--muted)}
+  .service-item p{margin:0 0 8px;font-size:12px;color:var(--muted)}
+  .service-item a {display:inline-block; font-size:12px; color:var(--gold); text-decoration:none; font-weight:700;}
   
   .btn-outline{background:transparent;border:2px solid var(--gold);color:var(--gold);padding:10px 20px;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s;width:100%;margin-top:16px}
   .btn-outline:hover{background:var(--gold);color:#1f1700}
   
+  #printHeader { display: none; text-align: center; margin-bottom: 10px; }
+  #printHeader h1 { margin: 0; color: #000; font-size: 20px; }
+  #printHeader p { margin: 0; color: #000; font-size: 12px; }
+  
   @media print {
+    body { background: #fff !important; }
     body * { visibility: hidden; }
     #printArea, #printArea * { visibility: visible; }
-    #printArea { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding: 0; }
-    #printArea .card { box-shadow: none; border: none; padding: 0; }
+    #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+    header, .announce, footer, .hero, #ramadanCard, #supportCard { display: none !important; }
+    main { padding: 0; }
+    .grid-2 { display: block !important; }
+    #printArea .card { box-shadow: none; border: none; padding: 0; margin: 0; }
     #printArea .table-controls, #printArea .section-title, #printArea p.muted { display: none !important; }
+    #printHeader { display: block !important; }
     .table-wrap { max-height: none !important; overflow: visible !important; border: none !important; }
-    table { font-size: 10pt; width: 100%; }
-    th, td { padding: 5px; }
+    table { font-size: 9pt; width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #999 !important; padding: 4px; color: #000 !important; }
+    th { background: #eee !important; }
+    .month-table thead tr:first-child th { background: #0A3622 !important; color: #fff !important; }
+    .month-table thead tr:nth-child(2) th.azan-header { background: #e8f5ec !important; color: #2d7a4f !important; }
+    .month-table thead tr:nth-child(2) th.jamat-header { background: #d4edda !important; color: #0A3622 !important; }
   }
 </style>
 </head>
@@ -218,6 +234,7 @@
       <button class="active" data-page="home" data-i18n="nav_home">Home</button>
       <button data-page="tools" data-i18n="nav_tools">Tools</button>
       <button data-page="madrasa" data-i18n="nav_madrasa">Madrasa</button>
+      <button data-page="services" data-i18n="nav_services">Services</button>
       <button data-page="announcements" id="announceNav" data-i18n="nav_announce">Announcements</button>
       <button data-page="about" data-i18n="nav_about">About</button>
       <button data-page="contact" data-i18n="nav_contact">Contact</button>
@@ -274,7 +291,7 @@
       </div>
     </div>
 
-    <div class="section">
+    <div class="section" id="prayerSection">
       <h2 class="section-title" data-i18n="today_prayers">Today's Prayers</h2>
       <div class="prayer-grid" id="prayerGrid" aria-live="polite">
         <div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div><div class="skeleton" style="height:140px"></div>
@@ -283,6 +300,10 @@
 
     <div class="grid-2 section">
       <div id="printArea">
+        <div id="printHeader">
+          <h1 id="printMosqueName">JAMIA MASJID</h1>
+          <p id="printMonthName">Monthly Timetable</p>
+        </div>
         <div class="card">
           <div class="table-controls" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
             <h2 class="section-title" style="margin:0" data-i18n="monthly_timetable">Monthly Timetable</h2>
@@ -315,7 +336,7 @@
           </div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" id="supportCard">
         <h2 class="section-title" data-i18n="support_mosque">Support the Mosque</h2>
         <p id="donateText" data-i18n="donate_desc" style="font-size:14px;line-height:1.6">Your donations keep our doors open, lights on, and community programmes running.</p>
         
@@ -331,11 +352,6 @@
           </li>
         </ul>
       </div>
-    </div>
-
-    <div class="section" id="servicesSection" style="display:none">
-      <h2 class="section-title">Mosque Services</h2>
-      <div class="services-grid" id="servicesGrid"></div>
     </div>
 
   </section>
@@ -381,6 +397,11 @@
   </section>
 
   <section id="page-madrasa" class="page"><div class="card"><h2 class="section-title" data-i18n="nav_madrasa">Madrasa & Learning</h2><div id="madrasaContent"><p class="pending-update">Staff yet to update</p></div></div></section>
+  
+  <section id="page-services" class="page">
+    <div id="servicesContent"><div class="card"><p class="pending-update">Staff yet to update</p></div></div>
+  </section>
+
   <section id="page-announcements" class="page"><div id="announcementsPageContent"><div class="card"><p class="pending-update">Staff yet to update</p></div></div></section>
   <section id="page-about" class="page"><div class="card"><h2 class="section-title" data-i18n="nav_about">About Us</h2><div id="aboutContent"><p class="pending-update">Staff yet to update</p></div></div></section>
   <section id="page-contact" class="page">
@@ -410,21 +431,53 @@
 
 <footer>
   <div class="container">
-    <div id="footerText">© <span id="footerYear"></span> <a href="#" class="footer-copyright" id="footerLegalLink">Jamia Masjid</a>. <span data-i18n="charity_no">Registered Charity No:</span> <span id="footerCharity">Staff yet to update</span></div>
-    <div style="margin-top:8px;opacity:.8">🛡️ This site does not store card details or personal data. 100% Privacy Guaranteed.</div>
-    <div style="margin-top:12px;">
-      <button class="toggle" id="shareBtn" data-i18n="share">Share Website</button>
-    </div>
+    <div>© <span id="footerYear"></span> <span id="footerMosque">Jamia Masjid</span> | <span data-i18n="charity_no">Charity No:</span> <span id="footerCharity">TBC</span></div>
   </div>
 </footer>
 
 <div class="toast" id="toast"></div>
-
 <div class="modal" id="donateModal" role="dialog"><div class="modal-card"><div class="modal-head"><h3 data-i18n="donate_safe">Donate – Safe & Secure</h3><button class="x" id="closeDonate">×</button></div><div class="modal-body" id="donateModalBody"><div id="donateLinks"><p class="pending-update">Staff yet to update</p></div><div id="bankSection"></div></div></div></div>
-<div class="modal" id="legalModal" role="dialog"><div class="modal-card"><div class="modal-head"><h3>Copyright & Legal Information</h3><button class="x" id="closeLegal">×</button></div><div class="modal-body"><div style="padding:24px"><h4 style="color:var(--emerald)">Open Source & No Liability</h4><p style="font-size:13px;color:var(--muted)">This website template is an open-source project provided "as is" for the community. Anyone may download, use, and modify it freely. The original creators hold no responsibility, liability, or ownership over the final deployment, content, or operation of the site.</p><h4 style="color:var(--emerald);margin-top:16px">Ownership & Content</h4><p style="font-size:13px;color:var(--muted)">The mosque or organization deploying this template retains full and exclusive ownership and operational responsibility for their specific instance, including all content displayed via the integrated Google Sheet.</p><h4 style="color:var(--emerald);margin-top:16px">Data Protection & Privacy</h4><p style="font-size:13px;color:var(--muted)">This website does not collect, store, or process personal data. No cookies, no analytics, no backend databases. The contact form uses a standard mailto: link. 100% Client-side privacy.</p><div style="background:#fffbf0;border:1px solid #e8d9a0;border-radius:10px;padding:14px;margin-top:16px;font-size:12px;color:#5a4a18"><strong>Donation Notice:</strong> All donation links are managed directly by the mosque. Donations are processed by secure third-party payment providers. This website does not handle, store, or have access to payment card details.</div></div></div></div></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  const $ = s => document.getElementById(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  // --- SAFE STORAGE WRAPPER ---
+  // Prevents script crash if localStorage is blocked (e.g., in strict privacy modes)
+  const safeStorage = {
+    get(key) { try { return localStorage.getItem(key); } catch(e) { return null; } },
+    set(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
+  };
+
+  // --- 1. IMMEDIATE UI BINDINGS (Theme & Language) ---
+  // Bound first so they work instantly even if sheet fetching fails.
+  
+  const themeBtn = $('themeToggle');
+  if (safeStorage.get('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if (themeBtn) themeBtn.textContent = '☀️';
+  }
+  if (themeBtn) {
+    themeBtn.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.textContent = '🌙';
+        safeStorage.set('theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeBtn.textContent = '☀️';
+        safeStorage.set('theme', 'dark');
+      }
+    };
+  }
+
+  if ($('langSelect')) {
+    $('langSelect').onchange = (e) => applyLang(e.target.value);
+  }
+
+  // --- 2. CONFIG & CONSTANTS ---
   const CONFIG = {
     SHEET_URL: 'PASTE_YOUR_SHEET_ID_HERE',
     REFRESH_SECONDS: 300,
@@ -432,10 +485,10 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   const i18n = {
-    EN: { donate: "Donate", share: "Share Website", next_prayer: "Next Prayer", azan: "Azan", jamat: "Jamat", today_prayers: "Today's Prayers", monthly_timetable: "Monthly Timetable", expand: "Expand", support_mosque: "Support the Mosque", donate_desc: "Your donations keep our doors open, lights on, and community programmes running.", zakat_sadaqah: "Zakat & Sadaqah", click_donate: "Click to donate securely.", nav_home: "Home", nav_tools: "Tools", nav_madrasa: "Madrasa", nav_announce: "Announcements", nav_about: "About", nav_contact: "Contact", send_email: "Send Email", get_directions: "📍 Get Directions", donate_safe: "Donate – Safe & Secure", charity_no: "Registered Charity No:", raised_of: "raised of", qibla: "Qibla Compass", zakat_calc: "Zakat Calculator" },
-    UR: { donate: "عطیہ", share: "ویب سائٹ شیئر کریں", next_prayer: "اگلی نماز", azan: "اذان", jamat: "جماعت", today_prayers: "آج کی نمازیں", monthly_timetable: "ماہانہ وقت", expand: "کھولیں", support_mosque: "مسجد کی مدد کریں", donate_desc: "آپ کے عطیات ہماری دروازے کھلے رکھتے ہیں۔", zakat_sadaqah: "زکوۃ و صدقہ", click_donate: "محفوظ طریقے سے عطیہ دینے کے لیے کلک کریں۔", nav_home: "ہوم", nav_tools: "ٹولز", nav_madrasa: "مدرسہ", nav_announce: "اعلانات", nav_about: "ہمارے بارے میں", nav_contact: "رابطہ", send_email: "ای میل بھیجیں", get_directions: "📍 رہنمائی حاصل کریں", donate_safe: "عطیہ – محفوظ و نجی", charity_no: "رجسٹرڈ چیرٹی نمبر:", raised_of: "میں سے اکٹھا کیا", qibla: "قبلہ نما", zakat_calc: "زکوۃ کیلکولیٹر" },
-    BN: { donate: "দান", share: "ওয়েবসাইট শেয়ার করুন", next_prayer: "পরবর্তী নামাজ", azan: "আজান", jamat: "জামাত", today_prayers: "আজকের নামাজ", monthly_timetable: "মাসিক সময়সূচি", expand: "প্রসারিত করুন", support_mosque: "মসজিদকে সহায়তা করুন", donate_desc: "আপনার অনুদান আমাদের দরজা খোলা রাখে।", zakat_sadaqah: "যাকাত ও সদকা", click_donate: "নিরাপদে দান করতে ক্লিক করুন।", nav_home: "হোম", nav_tools: "টুলস", nav_madrasa: "মাদ্রাসা", nav_announce: "ঘোষণা", nav_about: "আমাদের সম্পর্কে", nav_contact: "যোগাযোগ", send_email: "ইমেইল পাঠান", get_directions: "📍 দিকনির্দেশ নিন", donate_safe: "দান – নিরাপদ", charity_no: "নিবন্ধিত দাতব্য নং:", raised_of: "এর মধ্যে সংগৃহীত", qibla: "কিবলা কম্পাস", zakat_calc: "যাকাত ক্যালকুলেটর" },
-    TA: { donate: "நன்கொடை", share: "வலைத்தளத்தை பகிர்", next_prayer: "அடுத்த தொழுகை", azan: "அஸான்", jamat: "ஜமாஅத்", today_prayers: "இன்றைய தொழுகைகள்", monthly_timetable: "மாதாந்திர நேர அட்டவணை", expand: "விரிவாக்கு", support_mosque: "பள்ளிவாசலை ஆதரிக்கவும்", donate_desc: "உங்கள் நன்கொடைகள் எங்கள் கதவுகளைத் திறந்து வைக்கின்றன.", zakat_sadaqah: "ஸகாத் & ஸதகா", click_donate: "பாதுகாப்பாக நன்கொடை அளிக்க கிளிக் செய்யவும்.", nav_home: "முகப்பு", nav_tools: "கருவிகள்", nav_madrasa: "மதரஸா", nav_announce: "அறிவிப்புகள்", nav_about: "எங்களை பற்றி", nav_contact: "தொடர்பு", send_email: "மின்னஞ்சல் அனுப்பு", get_directions: "📍 வழிகாட்டி பெறு", donate_safe: "நன்கொடை – பாதுகாப்பானது", charity_no: "பதிவு செய்யப்பட்ட தொண்டு எண்:", raised_of: "இல் திரட்டப்பட்டது", qibla: "கிப்லா திசைகாட்டி", zakat_calc: "ஸகாத் கால்குலேட்டர்" }
+    EN: { donate: "Donate", share: "Share Website", next_prayer: "Next Prayer", azan: "Azan", jamat: "Jamat", today_prayers: "Today's Prayers", monthly_timetable: "Monthly Timetable", expand: "Expand", support_mosque: "Support the Mosque", donate_desc: "Your donations keep our doors open, lights on, and community programmes running.", zakat_sadaqah: "Zakat & Sadaqah", click_donate: "Click to donate securely.", nav_home: "Home", nav_tools: "Tools", nav_madrasa: "Madrasa", nav_services: "Services", nav_announce: "Announcements", nav_about: "About", nav_contact: "Contact", send_email: "Send Email", get_directions: "📍 Get Directions", donate_safe: "Donate – Safe & Secure", charity_no: "Charity No:", raised_of: "raised of", qibla: "Qibla Compass", zakat_calc: "Zakat Calculator" },
+    UR: { donate: "عطیہ", share: "ویب سائٹ شیئر کریں", next_prayer: "اگلی نماز", azan: "اذان", jamat: "جماعت", today_prayers: "آج کی نمازیں", monthly_timetable: "ماہانہ وقت", expand: "کھولیں", support_mosque: "مسجد کی مدد کریں", donate_desc: "آپ کے عطیات ہماری دروازے کھلے رکھتے ہیں۔", zakat_sadaqah: "زکوۃ و صدقہ", click_donate: "محفوظ طریقے سے عطیہ دینے کے لیے کلک کریں۔", nav_home: "ہوم", nav_tools: "ٹولز", nav_madrasa: "مدرسہ", nav_services: "خدمات", nav_announce: "اعلانات", nav_about: "ہمارے بارے میں", nav_contact: "رابطہ", send_email: "ای میل بھیجیں", get_directions: "📍 رہنمائی حاصل کریں", donate_safe: "عطیہ – محفوظ و نجی", charity_no: "چیرٹی نمبر:", raised_of: "میں سے اکٹھا کیا", qibla: "قبلہ نما", zakat_calc: "زکوۃ کیلکولیٹر" },
+    BN: { donate: "দান", share: "ওয়েবসাইট শেয়ার করুন", next_prayer: "পরবর্তী নামাজ", azan: "আজান", jamat: "জামাত", today_prayers: "আজকের নামাজ", monthly_timetable: "মাসিক সময়সূচি", expand: "প্রসারিত করুন", support_mosque: "মসজিদকে সহায়তা করুন", donate_desc: "আপনার অনুদান আমাদের দরজা খোলা রাখে।", zakat_sadaqah: "যাকাত ও সদকা", click_donate: "নিরাপদে দান করতে ক্লিক করুন।", nav_home: "হোম", nav_tools: "টুলস", nav_madrasa: "মাদ্রাসা", nav_services: "সেবা", nav_announce: "ঘোষণা", nav_about: "আমাদের সম্পর্কে", nav_contact: "যোগাযোগ", send_email: "ইমেইল পাঠান", get_directions: "📍 দিকনির্দেশ নিন", donate_safe: "দান – নিরাপদ", charity_no: "চ্যারিটি নং:", raised_of: "এর মধ্যে সংগৃহীত", qibla: "কিবলা কম্পাস", zakat_calc: "যাকাত ক্যালকুলেটর" },
+    TA: { donate: "நன்கொடை", share: "வலைத்தளத்தை பகிர்", next_prayer: "அடுத்த தொழுகை", azan: "அஸான்", jamat: "ஜமாஅத்", today_prayers: "இன்றைய தொழுகைகள்", monthly_timetable: "மாதாந்திர நேர அட்டவணை", expand: "விரிவாக்கு", support_mosque: "பள்ளிவாசலை ஆதரிக்கவும்", donate_desc: "உங்கள் நன்கொடைகள் எங்கள் கதவுகளைத் திறந்து வைக்கின்றன.", zakat_sadaqah: "ஸகாத் & ஸதகா", click_donate: "பாதுகாப்பாக நன்கொடை அளிக்க கிளிக் செய்யவும்.", nav_home: "முகப்பு", nav_tools: "கருவிகள்", nav_madrasa: "மதரஸா", nav_services: "சேவைகள்", nav_announce: "அறிவிப்புகள்", nav_about: "எங்களை பற்றி", nav_contact: "தொடர்பு", send_email: "மின்னஞ்சல் அனுப்பு", get_directions: "📍 வழிகாட்டி பெறு", donate_safe: "நன்கொடை – பாதுகாப்பானது", charity_no: "தொண்டு எண்:", raised_of: "இல் திரட்டப்பட்டது", qibla: "கிப்லா திசைகாட்டி", zakat_calc: "ஸகாத் கால்குலேட்டர்" }
   };
 
   const MONTH_TABS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -450,9 +503,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   const SHEET_ID = extractSheetId(CONFIG.SHEET_URL);
-  const $ = s => document.getElementById(s);
-  const $$ = s => document.querySelectorAll(s);
   
+  // --- 3. STATE VARIABLES ---
   let DATA = {};
   let PRAYER_SEQUENCE = [];
   let COUNTDOWN_TIMER = null;
@@ -460,6 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let CURRENT_MONTH_IDX = new Date().getMonth();
   let SELECTED_DATE = null;
 
+  // --- 4. UTILITY FUNCTIONS ---
   function londonNow() {
     const fmt = new Intl.DateTimeFormat('en-CA', { timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
     const p = Object.fromEntries(fmt.formatToParts(new Date()).map(x => [x.type, x.value]));
@@ -542,6 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showToast(msg) {
     const t = $('toast');
+    if (!t) return;
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
@@ -589,6 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // --- 5. CORE RENDER FUNCTIONS ---
   function applyLang(lang) {
     CURRENT_LANG = lang;
     document.documentElement.lang = lang === 'UR' ? 'ur' : lang === 'BN' ? 'bn' : lang === 'TA' ? 'ta' : 'en';
@@ -598,30 +653,38 @@ document.addEventListener('DOMContentLoaded', function() {
       if (dict[key]) el.textContent = dict[key];
     });
     const now = londonNow();
-    processContent(now.getFullYear(), now.getMonth()+1, now.getDate());
+    try {
+      processContent(now.getFullYear(), now.getMonth()+1, now.getDate());
+    } catch(e) {
+      console.error("Error translating dynamic content:", e);
+    }
   }
 
   function updateClock() {
     const now = londonNow();
-    $('londonTime').textContent = fmtTime(now) + ':' + String(now.getSeconds()).padStart(2, '0');
-    $('londonDate').textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    if ($('londonTime')) $('londonTime').textContent = fmtTime(now) + ':' + String(now.getSeconds()).padStart(2, '0');
+    if ($('londonDate')) $('londonDate').textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
     try {
-      $('hijriDate').textContent = new Intl.DateTimeFormat('en-SA-u-ca-islamic', { day:'numeric', month:'long', year:'numeric' }).format(now) + ' AH';
+      if ($('hijriDate')) $('hijriDate').textContent = new Intl.DateTimeFormat('en-SA-u-ca-islamic', { day:'numeric', month:'long', year:'numeric' }).format(now) + ' AH';
     } catch (e) {
-      $('hijriDate').textContent = '—';
+      if ($('hijriDate')) $('hijriDate').textContent = '—';
     }
   }
 
   function processSettings() {
     const s = {};
     (DATA.settings || []).forEach(r => s[r.Key] = r.Value);
-    if (s.Mosque_Name) $('brandName').innerHTML = s.Mosque_Name + ' <span id="brandSub">' + (s.Mosque_Subtitle || '') + '</span>';
-    if (s.Charity_No) $('footerCharity').textContent = s.Charity_No;
-    if (s.Map_URL) {
+    if (s.Mosque_Name) {
+      if ($('brandName')) $('brandName').innerHTML = s.Mosque_Name + ' <span id="brandSub">' + (s.Mosque_Subtitle || '') + '</span>';
+      if ($('printMosqueName')) $('printMosqueName').innerText = s.Mosque_Name;
+      if ($('footerMosque')) $('footerMosque').innerText = s.Mosque_Name;
+    }
+    if (s.Charity_No && $('footerCharity')) $('footerCharity').textContent = s.Charity_No;
+    if (s.Map_URL && $('mapsBtn')) {
       $('mapsBtn').style.display = 'block';
       $('mapsBtn').onclick = () => window.open(s.Map_URL, '_blank');
     }
-    if (s.Donation_Goal && s.Donation_Raised) {
+    if (s.Donation_Goal && s.Donation_Raised && $('donationGoalCard')) {
       $('donationGoalCard').style.display = 'block';
       $('raisedAmount').textContent = '£' + s.Donation_Raised;
       $('goalAmount').textContent = '£' + s.Donation_Goal;
@@ -629,13 +692,13 @@ document.addEventListener('DOMContentLoaded', function() {
       $('progressBar').style.width = pct + '%';
       $('progressBar').textContent = Math.round(pct) + '%';
     }
-    if (s.Ramadan_Start && s.Ramadan_End) {
+    if (s.Ramadan_Start && s.Ramadan_End && $('ramadanCard')) {
       const now = londonNow();
       if (inRangeYMD(s.Ramadan_Start, s.Ramadan_End, now.getFullYear(), now.getMonth() + 1, now.getDate())) {
         $('ramadanCard').style.display = 'block';
         if (DATA.ramadanData && DATA.ramadanData[0]) {
-          $('suhoorDua').textContent = DATA.ramadanData[0].Suhoor_Dua_AR + ' (' + DATA.ramadanData[0].Suhoor_Dua_EN + ')';
-          $('iftarDua').textContent = DATA.ramadanData[0].Iftar_Dua_AR + ' (' + DATA.ramadanData[0].Iftar_Dua_EN + ')';
+          if($('suhoorDua')) $('suhoorDua').textContent = DATA.ramadanData[0].Suhoor_Dua_AR + ' (' + DATA.ramadanData[0].Suhoor_Dua_EN + ')';
+          if($('iftarDua')) $('iftarDua').textContent = DATA.ramadanData[0].Iftar_Dua_AR + ' (' + DATA.ramadanData[0].Iftar_Dua_EN + ')';
         }
       }
     }
@@ -646,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const orFallback = (v, key) => v || CONFIG.FALLBACK[key] || FALLBACK_TEXT;
     
     const janazah = (DATA.janazahData || []).find(j => sameYMD(j.Date, year, month, date));
-    if (janazah) {
+    if (janazah && $('announceBar')) {
       $('announceBar').style.display = 'block';
       $('announceBar').style.background = '#8B0000';
       $('announceTrack').innerHTML = '<span>⚠️ JANAZAH: ' + janazah.Name + ' at ' + janazah.Time + ', ' + janazah.Location + '</span>'.repeat(10);
@@ -655,15 +718,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const bannerAnnounces = allAnnounces.filter(r => (r.Banner || '').trim().toLowerCase() === 'yes');
       const eventAnnounces = allAnnounces.filter(r => (r.Banner || '').trim().toLowerCase() !== 'yes');
       
-      if (bannerAnnounces.length) {
-        $('announceNav').style.display = 'block';
+      if (bannerAnnounces.length && $('announceBar')) {
+        if($('announceNav')) $('announceNav').style.display = 'block';
         $('announceBar').style.display = 'block';
         $('announceBar').style.background = 'var(--emerald)';
         const track = bannerAnnounces.map(a => '<span>' + a['Content_' + lang] + '</span>').join('');
-        $('announceTrack').innerHTML = track + track;
+        if($('announceTrack')) $('announceTrack').innerHTML = track + track;
       } else {
-        $('announceBar').style.display = 'none';
-        if (!eventAnnounces.length) $('announceNav').style.display = 'none';
+        if ($('announceBar')) $('announceBar').style.display = 'none';
+        if (!eventAnnounces.length && $('announceNav')) $('announceNav').style.display = 'none';
       }
       
       let pageHtml = '';
@@ -675,53 +738,83 @@ document.addEventListener('DOMContentLoaded', function() {
         pageHtml += '<h2 class="section-title" style="margin-top:28px">Programmes & Events</h2>';
         pageHtml += eventAnnounces.map(a => '<div class="card announcement-event"><p>' + a['Content_' + lang].replace(/\n/g, '<br>') + '</p></div>').join('');
       }
-      $('announcementsPageContent').innerHTML = pageHtml || '<div class="card"><p class="pending-update">' + FALLBACK_TEXT + '</p></div>';
+      if ($('announcementsPageContent')) $('announcementsPageContent').innerHTML = pageHtml || '<div class="card"><p class="pending-update">' + FALLBACK_TEXT + '</p></div>';
     }
 
-    if (DATA.dailyData && DATA.dailyData.length > 0) {
+    if (DATA.dailyData && DATA.dailyData.length > 0 && $('dailyContentBody')) {
       const todayRow = DATA.dailyData.find(r => sameYMD(r.Date, year, month, date));
       const item = todayRow || DATA.dailyData[Math.floor(Math.random() * DATA.dailyData.length)];
       $('dailyContentBody').innerHTML = '"' + (item['Text_' + lang] || item.Text_EN || '—') + '"';
-    } else {
+    } else if ($('dailyContentBody')) {
       $('dailyContentBody').innerHTML = '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
     }
 
     const bankRows = (DATA.bankData || []).filter(r => Object.values(r).some(v => v && v.trim()));
-    $('bankSection').innerHTML = bankRows.length ? bankRows.map(b => 
-      '<div class="bank-account-name">' + (b.Account_Name || 'Bank Transfer') + '</div>' +
-      '<div class="bank"><strong>Account Name:</strong> ' + orFallback(b.Bank_Name) + '\n<strong>Sort Code:</strong> ' + orFallback(b.Sort_Code) + '\n<strong>Account:</strong> ' + orFallback(b.Account_No) + '</div>'
-    ).join('') : '<div class="bank"><span class="pending-update">' + FALLBACK_TEXT + '</span></div>';
+    if ($('bankSection')) {
+      $('bankSection').innerHTML = bankRows.length ? bankRows.map(b => 
+        '<div class="bank-account-name">' + (b.Account_Name || 'Bank Transfer') + '</div>' +
+        '<div class="bank"><strong>Account Name:</strong> ' + orFallback(b.Bank_Name) + '\n<strong>Sort Code:</strong> ' + orFallback(b.Sort_Code) + '\n<strong>Account:</strong> ' + orFallback(b.Account_No) + '</div>'
+      ).join('') : '<div class="bank"><span class="pending-update">' + FALLBACK_TEXT + '</span></div>';
+    }
     
     const links = (DATA.linksData || []).filter(r => r.URL && r.URL.trim());
-    $('donateLinks').innerHTML = links.length ? links.map(r => '<a href="' + r.URL + '" target="_blank" rel="noopener" class="donate-btn"><strong>' + (r.Button_Text || 'Donate via ' + r.Name) + '</strong><span>Secure external payment</span></a>').join('') : '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    if ($('donateLinks')) {
+      $('donateLinks').innerHTML = links.length ? links.map(r => '<a href="' + r.URL + '" target="_blank" rel="noopener" class="donate-btn"><strong>' + (r.Button_Text || 'Donate via ' + r.Name) + '</strong><span>Secure external payment</span></a>').join('') : '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    }
 
-    $('madrasaContent').innerHTML = (DATA.madrasaData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
-      '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
-    ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    if ($('madrasaContent')) {
+      $('madrasaContent').innerHTML = (DATA.madrasaData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
+        '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
+      ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    }
     
-    $('aboutContent').innerHTML = (DATA.aboutData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
-      '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
-    ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    if ($('aboutContent')) {
+      $('aboutContent').innerHTML = (DATA.aboutData || []).filter(r => r['Title_' + lang] || r.Title_EN).map(r => 
+        '<div class="madrasa-block"><h3>' + (r['Title_' + lang] || r.Title_EN || '') + '</h3><p>' + (r['Content_' + lang] || r.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
+      ).join('') || '<p class="pending-update">' + FALLBACK_TEXT + '</p>';
+    }
 
     const c = (DATA.contactData || [])[0] || {};
-    $('contactInfo').innerHTML = 
-      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone:</strong> ' + orFallback(c.Phone, 'phone') + '</div></li>' +
-      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg><div><strong>Email:</strong> ' + orFallback(c.Email, 'email') + '</div></li>' +
-      '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address:</strong> ' + (c['Address_' + lang] || c.Address_EN || FALLBACK_TEXT).replace(/\n/g, '<br>') + '</div></li>';
+    if ($('contactInfo')) {
+      $('contactInfo').innerHTML = 
+        '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><div><strong>Phone:</strong> ' + orFallback(c.Phone, 'phone') + '</div></li>' +
+        '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg><div><strong>Email:</strong> ' + orFallback(c.Email, 'email') + '</div></li>' +
+        '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><div><strong>Address:</strong> ' + (c['Address_' + lang] || c.Address_EN || FALLBACK_TEXT).replace(/\n/g, '<br>') + '</div></li>';
+    }
     
-    $('contactForm').onsubmit = e => {
-      e.preventDefault();
-      const f = e.target;
-      window.location.href = 'mailto:' + c.Email + '?subject=Website Contact from ' + encodeURIComponent(f.name.value) + '&body=' + encodeURIComponent(f.message.value) + '%0A%0AFrom: ' + encodeURIComponent(f.name.value) + ' (' + encodeURIComponent(f.email.value) + ')';
-    };
+    if ($('contactForm')) {
+      $('contactForm').onsubmit = e => {
+        e.preventDefault();
+        const f = e.target;
+        window.location.href = 'mailto:' + c.Email + '?subject=Website Contact from ' + encodeURIComponent(f.name.value) + '&body=' + encodeURIComponent(f.message.value) + '%0A%0AFrom: ' + encodeURIComponent(f.name.value) + ' (' + encodeURIComponent(f.email.value) + ')';
+      };
+    }
 
-    if (DATA.servicesData && DATA.servicesData.length > 0) {
-      $('servicesSection').style.display = 'block';
-      $('servicesGrid').innerHTML = DATA.servicesData.map(s => 
-        '<div class="service-item"><h4>' + (s['Title_' + lang] || s.Title_EN || '') + '</h4><p>' + (s['Content_' + lang] || s.Content_EN || '').replace(/\n/g, '<br>') + '</p></div>'
-      ).join('');
-    } else {
-      $('servicesSection').style.display = 'none';
+    // Services Page Logic (Grouped by Section)
+    const servicesData = DATA.servicesData || [];
+    const servicesEl = $('servicesContent');
+    if (servicesEl) {
+      if (servicesData.length > 0) {
+        const sections = {};
+        servicesData.forEach(s => {
+          const secName = (s.Section || 'General Services').trim();
+          if (!sections[secName]) sections[secName] = [];
+          sections[secName].push(s);
+        });
+        let html = '';
+        for (const secName in sections) {
+          html += `<div class="card section"><h2 class="section-title">${secName}</h2><div class="services-grid">`;
+          for (const s of sections[secName]) {
+            const title = s['Title_' + lang] || s.Title_EN || s.Title || '';
+            const content = s['Content_' + lang] || s.Content_EN || s.Content || '';
+            html += `<div class="service-item"><h4>${title}</h4><p>${content.replace(/\n/g, '<br>')}</p>${s.Link ? `<a href="${s.Link}" target="_blank">Open Link</a>` : ''}</div>`;
+          }
+          html += `</div></div>`;
+        }
+        servicesEl.innerHTML = html;
+      } else {
+        servicesEl.innerHTML = '<div class="card"><p class="pending-update">Staff yet to update</p></div>';
+      }
     }
   }
 
@@ -766,15 +859,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function renderUI(now) {
     const grid = $('prayerGrid');
+    if (!grid) return;
     grid.innerHTML = '';
     grid.classList.remove('has-extra');
     let nextIdx = -1, nextJamatIdx = -1, nowMin = now.getHours() * 60 + now.getMinutes();
     
     if(PRAYER_SEQUENCE.length === 0) {
         grid.innerHTML = '<div class="pray"><div class="n">' + FALLBACK_TEXT + '</div></div>';
-        $('nextName').textContent = FALLBACK_TEXT;
-        $('nextAzan').textContent = '--:--';
-        $('nextJamat').textContent = '--:--';
+        if($('nextName')) $('nextName').textContent = FALLBACK_TEXT;
+        if($('nextAzan')) $('nextAzan').textContent = '--:--';
+        if($('nextJamat')) $('nextJamat').textContent = '--:--';
         return;
     }
 
@@ -810,24 +904,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (nextIdx !== -1) {
       const np = PRAYER_SEQUENCE[nextIdx];
-      $('nextName').textContent = np.name;
-      $('nextAzan').textContent = np.azan ? np.azan.str : '--:--';
+      if($('nextName')) $('nextName').textContent = np.name;
+      if($('nextAzan')) $('nextAzan').textContent = np.azan ? np.azan.str : '--:--';
       if (np.jamats.length && nextJamatIdx !== -1) {
-        $('nextJamat').textContent = np.jamats[nextJamatIdx].time ? np.jamats[nextJamatIdx].time.str : '--:--';
-        $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase() + ' ' + np.jamats[nextJamatIdx].label.toUpperCase();
+        if($('nextJamat')) $('nextJamat').textContent = np.jamats[nextJamatIdx].time ? np.jamats[nextJamatIdx].time.str : '--:--';
+        if($('nextLabel')) $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase() + ' ' + np.jamats[nextJamatIdx].label.toUpperCase();
       } else {
-        $('nextJamat').textContent = '--:--';
-        $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase();
+        if($('nextJamat')) $('nextJamat').textContent = '--:--';
+        if($('nextLabel')) $('nextLabel').textContent = 'NEXT: ' + np.name.toUpperCase();
       }
     }
   }
 
   function renderMonthTable(year, monthIdx) {
     const tabName = MONTH_TABS[monthIdx];
-    $('monthLabel').textContent = tabName + ' ' + year;
+    if ($('monthLabel')) $('monthLabel').textContent = tabName + ' ' + year;
+    if ($('printMonthName')) $('printMonthName').textContent = tabName + ' ' + year + ' - Timetable';
     fetchTab(tabName).then(monthData => {
       DATA.monthData = monthData;
       const tbody = $('monthBody');
+      if (!tbody) return;
       const today = londonNow().getDate();
       const todayMonth = londonNow().getMonth();
       const days = new Date(year, monthIdx + 1, 0).getDate();
@@ -854,7 +950,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (COUNTDOWN_TIMER) clearInterval(COUNTDOWN_TIMER);
     COUNTDOWN_TIMER = setInterval(() => {
       if (PRAYER_SEQUENCE.length === 0) {
-        $('countdown').textContent = '--:--:--';
+        if($('countdown')) $('countdown').textContent = '--:--:--';
         return;
       }
       const now = londonNow();
@@ -879,14 +975,14 @@ document.addEventListener('DOMContentLoaded', function() {
           target.setDate(target.getDate() + 1);
         }
       }
-      if (target) {
+      if (target && $('countdown')) {
         const diff = target - now;
         const h = Math.floor(diff / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
         const timeStr = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
         $('countdown').textContent = timeStr;
-      } else {
+      } else if ($('countdown')) {
         $('countdown').textContent = '--:--:--';
       }
     }, 1000);
@@ -907,9 +1003,9 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchTab('About'), fetchTab('GiftAid'), fetchTab('Ramadan'), fetchTab('DailyContent'), fetchTab('Janazah'), fetchTab('Services')
       ]);
       DATA = { settings, monthData, jummahData, eidData, taraweehData, extraData, announceData, madrasaData, bankData, linksData, contactData, aboutData, giftAidData, ramadanData, dailyData, janazahData, servicesData };
-      localStorage.setItem('cachedData', JSON.stringify(DATA));
+      safeStorage.set('cachedData', JSON.stringify(DATA));
     } catch (e) {
-      const cache = localStorage.getItem('cachedData');
+      const cache = safeStorage.get('cachedData');
       if (cache) { DATA = JSON.parse(cache); showToast("Offline Mode: Showing cached times"); } else { return; }
     }
 
@@ -922,9 +1018,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(init, CONFIG.REFRESH_SECONDS * 1000);
   }
 
-  // --- Bulletproof Event Bindings ---
-  
-  // Navigation
+  // --- 6. REMAINING UI BINDINGS ---
   $$('nav button').forEach(btn => {
     btn.onclick = () => {
       $$('nav button').forEach(b => b.classList.remove('active'));
@@ -936,150 +1030,127 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   });
 
-  // Modals
   function openModal(m) { if (m) { m.classList.add('show'); document.body.style.overflow = 'hidden'; } }
   function closeModal(m) { if (m) { m.classList.remove('show'); document.body.style.overflow = ''; } }
 
-  $('donateTop').onclick = () => openModal($('donateModal'));
-  $('zakatCard').onclick = () => openModal($('donateModal'));
-  $('closeDonate').onclick = () => closeModal($('donateModal'));
-  $('footerLegalLink').onclick = (e) => { e.preventDefault(); openModal($('legalModal')); };
-  $('closeLegal').onclick = () => closeModal($('legalModal'));
+  if ($('donateTop')) $('donateTop').onclick = () => openModal($('donateModal'));
+  if ($('zakatCard')) $('zakatCard').onclick = () => openModal($('donateModal'));
+  if ($('closeDonate')) $('closeDonate').onclick = () => closeModal($('donateModal'));
 
-  // Theme Toggle
-  const themeBtn = $('themeToggle');
-  if (localStorage.getItem('theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    themeBtn.textContent = '☀️';
+  if ($('qiblaTool')) {
+    $('qiblaTool').onclick = () => {
+      if (!navigator.geolocation) { showToast("Location not supported by device"); return; }
+      $('qiblaStatus').textContent = "Locating...";
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude, lon = pos.coords.longitude;
+        const kaabaLat = 21.4225, kaabaLon = 39.8262;
+        const phi1 = lat * Math.PI / 180, phi2 = kaabaLat * Math.PI / 180, deltaLambda = (kaabaLon - lon) * Math.PI / 180;
+        const y = Math.sin(deltaLambda) * Math.cos(phi2);
+        const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
+        const theta = Math.atan2(y, x) * 180 / Math.PI;
+        const compass = (theta + 360) % 360;
+        $('qiblaArrow').style.transform = `rotate(${compass}deg)`;
+        $('qiblaStatus').textContent = `Point arrow to ${Math.round(compass)}°`;
+        
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission().then(state => {
+            if (state === 'granted') {
+              window.addEventListener('deviceorientation', e => {
+                if (e.webkitCompassHeading) {
+                  const diff = (e.webkitCompassHeading - compass + 360) % 360;
+                  $('qiblaArrow').style.transform = `rotate(${-diff}deg)`;
+                }
+              });
+            }
+          });
+        }
+      }, () => showToast("Location access denied"));
+    };
   }
-  themeBtn.onclick = () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if (isDark) {
-      document.documentElement.removeAttribute('data-theme');
-      themeBtn.textContent = '🌙';
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      themeBtn.textContent = '☀️';
-      localStorage.setItem('theme', 'dark');
-    }
-  };
 
-  // Language Select
-  $('langSelect').onchange = (e) => applyLang(e.target.value);
+  if ($('zakatTool')) {
+    $('zakatTool').onclick = (e) => {
+      if (!e.target.closest('#zakatCalc')) {
+        const calc = $('zakatCalc');
+        calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
+      }
+    };
+  }
 
-  // Clock
+  if ($('calcZakatBtn')) {
+    $('calcZakatBtn').onclick = () => {
+      const c = parseFloat($('zakatCash').value) || 0;
+      const g = parseFloat($('zakatGold').value) || 0;
+      const d = parseFloat($('zakatDebt').value) || 0;
+      const net = c + g - d;
+      if (net < 0) { $('zakatResult').textContent = "No Zakat due"; return; }
+      const zakat = net * 0.025;
+      $('zakatResult').textContent = `Zakat Due: £${zakat.toFixed(2)}`;
+    };
+  }
+
+  let tasbihCount = parseInt(safeStorage.get('tasbihCount') || '0');
+  if ($('tasbihCount')) $('tasbihCount').textContent = tasbihCount;
+  if ($('tasbihTool')) {
+    $('tasbihTool').onclick = (e) => {
+      if (!e.target.closest('#tasbihCounter')) {
+        const c = $('tasbihCounter');
+        c.style.display = c.style.display === 'block' ? 'none' : 'block';
+      }
+    };
+  }
+  if ($('tasbihAdd')) {
+    $('tasbihAdd').onclick = () => {
+      tasbihCount++;
+      safeStorage.set('tasbihCount', tasbihCount);
+      $('tasbihCount').textContent = tasbihCount;
+    };
+  }
+  if ($('tasbihReset')) {
+    $('tasbihReset').onclick = () => {
+      tasbihCount = 0;
+      safeStorage.set('tasbihCount', tasbihCount);
+      $('tasbihCount').textContent = tasbihCount;
+    };
+  }
+
+  if ($('datePicker')) {
+    $('datePicker').addEventListener('change', e => {
+      SELECTED_DATE = e.target.value ? new Date(e.target.value + 'T00:00:00') : null;
+      const targetDate = SELECTED_DATE || londonNow();
+      buildPrayerSequence(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate(), targetDate.getDay());
+      renderUI(targetDate);
+    });
+  }
+
+  if ($('prevMonth')) {
+    $('prevMonth').onclick = () => {
+      CURRENT_MONTH_IDX--;
+      if (CURRENT_MONTH_IDX < 0) CURRENT_MONTH_IDX = 11;
+      renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
+    };
+  }
+  if ($('nextMonth')) {
+    $('nextMonth').onclick = () => {
+      CURRENT_MONTH_IDX++;
+      if (CURRENT_MONTH_IDX > 11) CURRENT_MONTH_IDX = 0;
+      renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
+    };
+  }
+  if ($('toggleMonth')) {
+    $('toggleMonth').onclick = function() {
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      document.querySelector('.table-wrap').style.maxHeight = expanded ? '400px' : 'none';
+      this.textContent = expanded ? 'Expand' : 'Collapse';
+      this.setAttribute('aria-expanded', !expanded);
+    };
+  }
+  if ($('printBtn')) $('printBtn').onclick = () => window.print();
+
+  // --- 7. START APP ---
   updateClock();
   setInterval(updateClock, 1000);
-  $('footerYear').textContent = new Date().getFullYear();
-
-  // Share Button
-  $('shareBtn').onclick = async () => {
-    if (navigator.share) {
-      try { await navigator.share({ title:'Jamia Masjid', url:window.location.href }); } catch (e) {}
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      showToast('Link copied to clipboard!');
-    }
-  };
-
-  // Tools
-  $('qiblaTool').onclick = () => {
-    if (!navigator.geolocation) { showToast("Location not supported by device"); return; }
-    $('qiblaStatus').textContent = "Locating...";
-    navigator.geolocation.getCurrentPosition(pos => {
-      const lat = pos.coords.latitude, lon = pos.coords.longitude;
-      const kaabaLat = 21.4225, kaabaLon = 39.8262;
-      const phi1 = lat * Math.PI / 180, phi2 = kaabaLat * Math.PI / 180, deltaLambda = (kaabaLon - lon) * Math.PI / 180;
-      const y = Math.sin(deltaLambda) * Math.cos(phi2);
-      const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
-      const theta = Math.atan2(y, x) * 180 / Math.PI;
-      const compass = (theta + 360) % 360;
-      $('qiblaArrow').style.transform = `rotate(${compass}deg)`;
-      $('qiblaStatus').textContent = `Point arrow to ${Math.round(compass)}°`;
-      
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission().then(state => {
-          if (state === 'granted') {
-            window.addEventListener('deviceorientation', e => {
-              if (e.webkitCompassHeading) {
-                const diff = (e.webkitCompassHeading - compass + 360) % 360;
-                $('qiblaArrow').style.transform = `rotate(${-diff}deg)`;
-              }
-            });
-          }
-        });
-      }
-    }, () => showToast("Location access denied"));
-  };
-
-  $('zakatTool').onclick = (e) => {
-    if (!e.target.closest('#zakatCalc')) {
-      const calc = $('zakatCalc');
-      calc.style.display = calc.style.display === 'block' ? 'none' : 'block';
-    }
-  };
-
-  $('calcZakatBtn').onclick = () => {
-    const c = parseFloat($('zakatCash').value) || 0;
-    const g = parseFloat($('zakatGold').value) || 0;
-    const d = parseFloat($('zakatDebt').value) || 0;
-    const net = c + g - d;
-    if (net < 0) { $('zakatResult').textContent = "No Zakat due"; return; }
-    const zakat = net * 0.025;
-    $('zakatResult').textContent = `Zakat Due: £${zakat.toFixed(2)}`;
-  };
-
-  let tasbihCount = parseInt(localStorage.getItem('tasbihCount') || '0');
-  $('tasbihCount').textContent = tasbihCount;
-  $('tasbihTool').onclick = (e) => {
-    if (!e.target.closest('#tasbihCounter')) {
-      const c = $('tasbihCounter');
-      c.style.display = c.style.display === 'block' ? 'none' : 'block';
-    }
-  };
-  $('tasbihAdd').onclick = () => {
-    tasbihCount++;
-    localStorage.setItem('tasbihCount', tasbihCount);
-    $('tasbihCount').textContent = tasbihCount;
-  };
-  $('tasbihReset').onclick = () => {
-    tasbihCount = 0;
-    localStorage.setItem('tasbihCount', tasbihCount);
-    $('tasbihCount').textContent = tasbihCount;
-  };
-
-  // Date Picker
-  $('datePicker').addEventListener('change', e => {
-    SELECTED_DATE = e.target.value ? new Date(e.target.value + 'T00:00:00') : null;
-    const targetDate = SELECTED_DATE || londonNow();
-    buildPrayerSequence(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate(), targetDate.getDay());
-    renderUI(targetDate);
-  });
-
-  // Month Table Controls
-  $('prevMonth').onclick = () => {
-    CURRENT_MONTH_IDX--;
-    if (CURRENT_MONTH_IDX < 0) CURRENT_MONTH_IDX = 11;
-    renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
-  };
-  
-  $('nextMonth').onclick = () => {
-    CURRENT_MONTH_IDX++;
-    if (CURRENT_MONTH_IDX > 11) CURRENT_MONTH_IDX = 0;
-    renderMonthTable(londonNow().getFullYear(), CURRENT_MONTH_IDX);
-  };
-  
-  $('toggleMonth').onclick = function() {
-    const expanded = this.getAttribute('aria-expanded') === 'true';
-    document.querySelector('.table-wrap').style.maxHeight = expanded ? '400px' : 'none';
-    this.textContent = expanded ? 'Expand' : 'Collapse';
-    this.setAttribute('aria-expanded', !expanded);
-  };
-  
-  $('printBtn').onclick = () => window.print();
-
-  // Start App
+  if ($('footerYear')) $('footerYear').textContent = new Date().getFullYear();
   init();
 });
 </script>
