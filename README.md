@@ -20,7 +20,7 @@ Libraries: jsPDF for client-side PDF generation.
 🚀 How to Setup (For Developers)
 Clone or download this repository.
 Open index.html in any code editor.
-Find const SHEET_URL = 'PASTE_YOUR_SHEET_ID_HERE'; in the script section.
+Find const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1U3ALEAbax8Y6S5_L3PMLlsegZSrcsJUojpk_cSJu_kI/edit?usp=drivesdk'; in the script section.
 Replace it with your Google Sheet ID.
 Upload to any hosting platform (GitHub Pages, Netlify, Vercel, or standard cPanel).
 📊 Staff Management Guide
